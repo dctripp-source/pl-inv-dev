@@ -4,127 +4,99 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="bg-gradient-to-br from-primary via-blue-700" style="background: linear-gradient(135deg, #2265CD 0%, #4A80D4 100%);">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div class="text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">
-                {{ __sr('platform_title', 'Platforma za Invalide', 'Платформа за Инвалиде') }}
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 text-blue-100">
-                {{ __sr('platform_subtitle', 'Platforma koja povezuje invalide i njihove biznise sa zajednicom', 'Платформа која повезује инвалиде и њихове бизнисе са заједницом') }}
-            </p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('business.index') }}" class="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                    <i class="fas fa-search mr-2"></i> {{ __sr('browse_businesses', 'Pregledaj Biznise', 'Прегледај Бизнисе') }}
-                </a>
-                <a href="{{ route('business.create') }}" class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors">
-                    <i class="fas fa-plus mr-2"></i> {{ __sr('add_business', 'Prijavite Svoj Biznis', 'Пријавите Свој Бизнис') }}
-                </a>
+<!-- Hero Section - bez padding-top da bude uz sam vrh -->
+<section class="relative min-h-screen flex items-center -mt-16">
+    <!-- DODAJ SLIKU OVDJE kao pozadinu cijele sekcije za DESKTOP -->
+
+    <div class="absolute inset-0 hidden md:block">
+        <img src="storage/images/hero-pl4.png" alt="Pozadinska slika" class="w-full h-full object-cover">
+    </div>
+
+    
+    <!-- DODAJ SLIKU OVDJE kao pozadinu cijele sekcije za MOBILE -->
+
+    <div class="absolute inset-0 block md:hidden">
+        <img src="storage/images/hero-pl4.png" alt="Pozadinska slika mobile" class="w-full h-full object-cover">
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-16">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <!-- Lijeva strana - Tekst content -->
+            <div class="text-white">
+                <h1 class="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 leading-tight" style="color: #2265CD; line-height: 55px !important;">
+                    {{ __sr('hero_title', 'Dobrodošli na Fond INVRS Biznis Mrežu', 'Добродошли на Фонд ИНВРС Бизнис Мрежу') }}
+                </h1>
+                
+                <p class="text-xl md:text-2xl mb-8 leading-relaxed" style="color: #161616; font-size: 22px;">
+                    {!! __sr('hero_subtitle', 'Zvanična platforma Fonda za profesionalnu rehabilitaciju i zapošljavanje invalida Republike Srpske, kreirana da <br> osnaži, poveže i promoviše preduzetnike sa invaliditetom.', 'Званична платформа Фонда за професионалну рехабилитацију и запошљавање инвалида Републике Српске, креирана да оснажи, повеже и промовише <br> предузетнике са инвалидитетом.') !!}
+                </p>
+                
+                <!-- CTA Button -->
+                <div class="mb-12">
+                    <a href="{{ route('business.create') }}" class="inline-block font-semibold px-8 py-4 rounded-full text-lg transition-colors duration-300 shadow-lg hover:shadow-xl text-white" style="background-color: #2265CD;" onmouseover="this.style.backgroundColor='#1c56b3'" onmouseout="this.style.backgroundColor='#2265CD'">
+                        {{ __sr('cta_button', 'Predstavi svoj biznis', 'Представи свој бизнис') }}
+                    </a>
+                </div>
+            
+            <!-- Desna strana - prazno za prostor -->
+            <div class="hidden lg:block">
+                <!-- Prazan prostor - slika je sada pozadina cijele sekcije -->
             </div>
         </div>
     </div>
 </section>
 
 <!-- Kako Funkcioniše - 3 Koraka -->
-<section class="py-20 bg-white">
+<section class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                {{ __sr('how_it_works', 'Kako funkcioniše?', 'Како функционише?') }}
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style="padding: 8px 24px; border-radius: 8px; display: inline-block;">
+                {{ __sr('how_it_works', 'Povežimo se brzo, jednostavno i efikasno.', 'Повежимо се брзо, једноставно и ефикасно.') }}
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                {{ __sr('platform_description', 'Jednostavno povezivanje sa zajednicom u tri koraka', 'Једноставно повезивање са заједницом у три корака') }}
-            </p>
         </div>
 
-        <div class="relative">
-            <!-- Desktop Connection Lines -->
-            <div class="hidden lg:block absolute top-1/2 left-0 w-full h-1 transform -translate-y-1/2">
-                <svg class="w-full h-full" viewBox="0 0 800 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <!-- Animated flowing line -->
-                    <path d="M50 10 Q 250 -5 400 10 T 750 10" stroke="#2265CD" stroke-width="3" fill="none" stroke-dasharray="10,10" opacity="0.3">
-                        <animate attributeName="stroke-dashoffset" values="0;20" dur="2s" repeatCount="indefinite"/>
-                    </path>
-                </svg>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            <!-- Korak 1 -->
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <!-- Ikona raketa -->
+                <div class="mb-6">
+                    <span style="font-size: 28px; font-weight: 700; color: #2563EB;">1</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">
+                    {{ __sr('step1_title', 'Prijavite svoj biznis', 'Пријавите свој бизнис') }}
+                </h3>
+                <p class="text-gray-600 leading-relaxed">
+                    {{ __sr('step1_desc', 'Jednostavno ispunite formular sa osnovnim informacijama o vašem biznisu. Proces traje samo nekoliko minuta.', 'Једноставно испуните формулар са основним информацијама о вашем бизнису. Процес траје само неколико минута.') }}
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 relative z-10">
-                <!-- Korak 1 -->
-                <div class="text-center group">
-                    <div class="relative mb-6">
-                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors duration-300 transform group-hover:scale-110">
-                            <span class="text-2xl font-bold text-white">1</span>
-                        </div>
-                        <!-- Floating Icon -->
-                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user-plus text-primary text-sm"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">
-                        {{ __sr('step1_title', 'Prijavite Svoj Biznis', 'Пријавите Свој Бизнис') }}
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        {{ __sr('step1_desc', 'Jednostavno ispunite formular sa osnovnim informacijama o vašem biznisu. Proces traje samo nekoliko minuta.', 'Једноставно испуните формулар са основним информацијама о вашем бизнису. Процес траје само неколико минута.') }}
-                    </p>
-                    <!-- Arrow for mobile -->
-                    <div class="lg:hidden mt-6 flex justify-center">
-                        <i class="fas fa-arrow-down text-primary text-2xl animate-bounce"></i>
-                    </div>
+            <!-- Korak 2 -->
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <!-- Ikona sijalica -->
+                <div class="mb-6">
+                    <span style="font-size: 28px; font-weight: 700; color: #2563EB;">2</span>
                 </div>
-
-                <!-- Korak 2 -->
-                <div class="text-center group">
-                    <div class="relative mb-6">
-                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors duration-300 transform group-hover:scale-110">
-                            <span class="text-2xl font-bold text-white">2</span>
-                        </div>
-                        <!-- Floating Icon -->
-                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-check text-green-600 text-sm"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">
-                        {{ __sr('step2_title', 'Brza Verifikacija', 'Брза Верификација') }}
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        {{ __sr('step2_desc', 'Naš tim će pregledati vašu prijavu u roku od 1-2 radna dana i kontaktirati vas putem email-a sa rezultatom.', 'Наш тим ће прегледати вашу пријаву у року од 1-2 радна дана и контактирати вас путем емаил-а са резултатом.') }}
-                    </p>
-                    <!-- Arrow for mobile -->
-                    <div class="lg:hidden mt-6 flex justify-center">
-                        <i class="fas fa-arrow-down text-primary text-2xl animate-bounce"></i>
-                    </div>
-                </div>
-
-                <!-- Korak 3 -->
-                <div class="text-center group">
-                    <div class="relative mb-6">
-                        <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-700 transition-colors duration-300 transform group-hover:scale-110">
-                            <span class="text-2xl font-bold text-white">3</span>
-                        </div>
-                        <!-- Floating Icon -->
-                        <div class="absolute -top-2 -right-2 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-rocket text-purple-600 text-sm"></i>
-                        </div>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-4">
-                        {{ __sr('step3_title', 'Povežite se sa Zajednicom', 'Повежите се са Заједницом') }}
-                    </h3>
-                    <p class="text-gray-600 leading-relaxed">
-                        {{ __sr('step3_desc', 'Nakon odobrenja, vaš biznis će biti vidljiv svima koji traže usluge. Počnite da gradite veze i širite svoju mrežu.', 'Након одобрења, ваш бизнис ће бити видљив свима који траже услуге. Почните да градите везе и ширите своју мрежу.') }}
-                    </p>
-                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">
+                    {{ __sr('step2_title', 'Brza Verifikacija', 'Брза Верификација') }}
+                </h3>
+                <p class="text-gray-600 leading-relaxed">
+                    {{ __sr('step2_desc', 'Naš tim će pregledati vašu prijavu u roku od 1-2 radna dana i kontaktirati vas sa rezultatom.', 'Наш тим ће прегледати вашу пријаву у року од 1–2 радна дана и контактирати вас са резултатом.') }}
+                </p>
             </div>
-        </div>
 
-        <!-- CTA After Steps -->
-        <div class="text-center mt-16">
-            <a href="{{ route('business.create') }}" class="inline-block bg-primary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-blue-700 transition-colors transform hover:scale-105">
-                <i class="fas fa-rocket mr-2"></i>
-                {{ __sr('get_started', 'Počnite Danas', 'Почните Данас') }}
-            </a>
-            <p class="text-gray-500 mt-3 text-sm">
-                {{ __sr('free_registration', 'Registracija je potpuno besplatna', 'Регистрација је потпуно бесплатна') }}
-            </p>
+            <!-- Korak 3 -->
+            <div class="bg-white rounded-lg shadow-lg p-8 text-center">
+                <!-- Ikona kvadrata -->
+                <div class="mb-6">
+                    <span style="font-size: 28px; font-weight: 700; color: #2563EB;">3</span>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">
+                    {{ __sr('step3_title', 'Povežite se sa zajednicom', 'Повежите се са заједницом') }}
+                </h3>
+                <p class="text-gray-600 leading-relaxed">
+                    {{ __sr('step3_desc', 'Nakon odobrenja, vaš biznis će biti vidljiv svima koji traže usluge. Počnite da gradite veze i širite svoju mrežu.', 'Након одобрења, ваш бизнис ће бити видљив свима који траже услуге. Почните да градите везе и ширите своју мрежу.') }}
+                </p>
+            </div>
         </div>
     </div>
 </section>

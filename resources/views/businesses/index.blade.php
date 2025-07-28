@@ -5,7 +5,7 @@
 @section('content')
 <!-- Hero Section -->
 <section class="bg-primary py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center -mt-20 pt-32">
         <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
             {{ __sr('all_businesses', 'Svi Biznisi', 'Сви Бизниси') }}
         </h1>
