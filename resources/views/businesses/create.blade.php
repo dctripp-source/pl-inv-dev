@@ -12,6 +12,9 @@
         <p class="text-xl text-blue-100">
             {{ __sr('join_community', 'Pridružite se našoj zajednici', 'Придружите се нашој заједници') }}
         </p>
+		<p class="text-xl text-blue-100">
+            {{ __sr('join_community', 'Na platformu se mogu prijaviti samo korisnici Fonda INVRS', 'На платформу се могу пријавити само корисници Фонда ИНВРС') }}
+        </p>
     </div>
 </div>
 

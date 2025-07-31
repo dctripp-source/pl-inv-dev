@@ -1,4 +1,4 @@
-// accessibility-helper.js - Dodati u public/js/accessibility-helper.js
+// accessibility-helper.js - Ažurirani za public/js/accessibility-helper.js
 
 class AccessibilityHelper {
     constructor() {
@@ -20,41 +20,107 @@ class AccessibilityHelper {
     }
 
     createSidebar() {
+        // Kreiraj wrapper koji će biti izvan body filtera
+        const accessibilityWrapper = document.createElement('div');
+        accessibilityWrapper.id = 'accessibility-wrapper';
+        accessibilityWrapper.style.cssText = `
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            pointer-events: none !important;
+            z-index: 999999 !important;
+            filter: none !important;
+        `;
+
         // Sticky accessibility button
         const accessButton = document.createElement('button');
         accessButton.id = 'accessibility-button';
+        accessButton.className = 'accessibility-button accessibility-no-scale';
+        accessButton.style.cssText = `
+            position: fixed !important;
+            left: 20px !important;
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+            width: 55px !important;
+            height: 55px !important;
+            background: #2265CD !important;
+            color: white !important;
+            border: none !important;
+            border-radius: 50% !important;
+            cursor: pointer !important;
+            z-index: 10001 !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+            transition: all 0.3s ease !important;
+            font-size: 33px !important;
+            pointer-events: auto !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+        `;
         accessButton.innerHTML = `
-            <i class="fas fa-wheelchair"></i>
+            <i class="fas fa-wheelchair" style="font-size: 25px !important;"></i>
             <span class="sr-only">Opcije pristupačnosti</span>
         `;
-        accessButton.className = 'accessibility-button';
         
         // Accessibility sidebar
         const sidebar = document.createElement('div');
         sidebar.id = 'accessibility-sidebar';
-        sidebar.className = 'accessibility-sidebar closed';
+        sidebar.className = 'accessibility-sidebar accessibility-no-scale closed';
+        sidebar.style.cssText = `
+            position: fixed !important;
+            left: -350px !important;
+            top: 0 !important;
+            width: 350px !important;
+            height: 100vh !important;
+            background: white !important;
+            border-right: 1px solid #e5e7eb !important;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1) !important;
+            z-index: 10000 !important;
+            transition: left 0.3s ease !important;
+            overflow-y: auto !important;
+            pointer-events: auto !important;
+        `;
+        
+        // Overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'accessibility-overlay';
+        overlay.style.cssText = `
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            background: rgba(0,0,0,0.5) !important;
+            z-index: 9999 !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            transition: all 0.3s ease !important;
+            pointer-events: auto !important;
+        `;
         
         const currentScript = document.documentElement.lang === 'sr-Cyrl' ? 'cyrillic' : 'latin';
         
         sidebar.innerHTML = `
-            <div class="accessibility-header">
-                <h3>${currentScript === 'cyrillic' ? 'Подешавања приступачности' : 'Podešavanja pristupačnosti'}</h3>
-                <button id="close-accessibility" class="close-btn">
+            <div class="accessibility-header accessibility-no-scale">
+                <h3 class="accessibility-no-scale">${currentScript === 'cyrillic' ? 'Подешавања приступачности' : 'Podešavanja pristupačnosti'}</h3>
+                <button id="close-accessibility" class="close-btn accessibility-no-scale">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             
-            <div class="accessibility-content">
+            <div class="accessibility-content accessibility-no-scale">
                 <!-- Font Size Controls -->
-                <div class="accessibility-group">
-                    <h4>${currentScript === 'cyrillic' ? 'Величина текста' : 'Veličina teksta'}</h4>
-                    <div class="font-controls">
-                        <button class="accessibility-btn" data-action="decrease-font">
+                <div class="accessibility-group accessibility-no-scale">
+                    <h4 class="accessibility-no-scale">${currentScript === 'cyrillic' ? 'Величина текста' : 'Veličina teksta'}</h4>
+                    <div class="font-controls accessibility-no-scale">
+                        <button class="accessibility-btn accessibility-no-scale" data-action="decrease-font">
                             <i class="fas fa-minus"></i>
                             ${currentScript === 'cyrillic' ? 'Смањи' : 'Smanji'}
                         </button>
-                        <span id="font-size-display">100%</span>
-                        <button class="accessibility-btn" data-action="increase-font">
+                        <span id="font-size-display" class="accessibility-no-scale">100%</span>
+                        <button class="accessibility-btn accessibility-no-scale" data-action="increase-font">
                             <i class="fas fa-plus"></i>
                             ${currentScript === 'cyrillic' ? 'Повећај' : 'Povećaj'}
                         </button>
@@ -62,40 +128,40 @@ class AccessibilityHelper {
                 </div>
 
                 <!-- Contrast Controls -->
-                <div class="accessibility-group">
-                    <h4>${currentScript === 'cyrillic' ? 'Контраст' : 'Kontrast'}</h4>
-                    <div class="contrast-controls">
-                        <button class="accessibility-btn" data-action="gray-contrast">
+                <div class="accessibility-group accessibility-no-scale">
+                    <h4 class="accessibility-no-scale">${currentScript === 'cyrillic' ? 'Контраст' : 'Kontrast'}</h4>
+                    <div class="contrast-controls accessibility-no-scale">
+                        <button class="accessibility-btn accessibility-no-scale" data-action="gray-contrast">
                             ${currentScript === 'cyrillic' ? 'Сива нијанса' : 'Siva nijansa'}
                         </button>
-                        <button class="accessibility-btn" data-action="high-contrast">
+                        <button class="accessibility-btn accessibility-no-scale" data-action="high-contrast">
                             ${currentScript === 'cyrillic' ? 'Велики контраст' : 'Veliki kontrast'}
                         </button>
-                        <button class="accessibility-btn" data-action="negative-contrast">
+                        <button class="accessibility-btn accessibility-no-scale" data-action="negative-contrast">
                             ${currentScript === 'cyrillic' ? 'Негативни контраст' : 'Negativni kontrast'}
                         </button>
                     </div>
                 </div>
 
                 <!-- Background Controls -->
-                <div class="accessibility-group">
-                    <h4>${currentScript === 'cyrillic' ? 'Позадина' : 'Pozadina'}</h4>
-                    <button class="accessibility-btn" data-action="light-background">
+                <div class="accessibility-group accessibility-no-scale">
+                    <h4 class="accessibility-no-scale">${currentScript === 'cyrillic' ? 'Позадина' : 'Pozadina'}</h4>
+                    <button class="accessibility-btn accessibility-no-scale" data-action="light-background">
                         ${currentScript === 'cyrillic' ? 'Светла позадина' : 'Svetla pozadina'}
                     </button>
                 </div>
 
                 <!-- Font Family Controls -->
-                <div class="accessibility-group">
-                    <h4>${currentScript === 'cyrillic' ? 'Фонт' : 'Font'}</h4>
-                    <button class="accessibility-btn" data-action="readable-font">
+                <div class="accessibility-group accessibility-no-scale">
+                    <h4 class="accessibility-no-scale">${currentScript === 'cyrillic' ? 'Фонт' : 'Font'}</h4>
+                    <button class="accessibility-btn accessibility-no-scale" data-action="readable-font">
                         ${currentScript === 'cyrillic' ? 'Читљив фонт' : 'Čitljiv font'}
                     </button>
                 </div>
 
                 <!-- Reset -->
-                <div class="accessibility-group">
-                    <button class="accessibility-btn reset-btn" data-action="reset">
+                <div class="accessibility-group accessibility-no-scale">
+                    <button class="accessibility-btn reset-btn accessibility-no-scale" data-action="reset">
                         <i class="fas fa-undo"></i>
                         ${currentScript === 'cyrillic' ? 'Ресетуј' : 'Resetuj'}
                     </button>
@@ -103,185 +169,125 @@ class AccessibilityHelper {
             </div>
         `;
 
-        document.body.appendChild(accessButton);
-        document.body.appendChild(sidebar);
+        // Dodaj sve u wrapper, a ne direktno u body
+        accessibilityWrapper.appendChild(accessButton);
+        accessibilityWrapper.appendChild(sidebar);
+        accessibilityWrapper.appendChild(overlay);
+        
+        // Dodaj wrapper u body
+        document.body.appendChild(accessibilityWrapper);
     }
 
     createStyles() {
         const style = document.createElement('style');
         style.textContent = `
-            /* Accessibility Button */
-            .accessibility-button {
-                position: fixed;
-                left: 20px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 50px;
-                height: 50px;
-                background: #2265CD;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                cursor: pointer;
-                z-index: 9999;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-                transition: all 0.3s ease;
-                font-size: 18px;
-                /* Fix for filter issues */
-                will-change: transform;
-                backface-visibility: hidden;
-                transform-style: preserve-3d;
-            }
-
-            /* Fix for contrast filters affecting fixed positioning */
-            body.accessibility-gray-contrast .accessibility-button,
-            body.accessibility-high-contrast .accessibility-button,
-            body.accessibility-negative-contrast .accessibility-button {
-                position: fixed !important;
-                left: 20px !important;
-                top: 50% !important;
-                transform: translateY(-50%) !important;
-                z-index: 10000 !important;
-            }
-
+            /* JEDNOSTAVNI CSS - samo osnovni stilovi */
             .accessibility-button:hover {
-                background: #0252CC;
-                transform: translateY(-50%) scale(1.1);
+                background: #0252CC !important;
+                transform: translateY(-50%) scale(1.1) !important;
             }
 
-            /* Accessibility Sidebar */
-            .accessibility-sidebar {
-                position: fixed;
-                left: -350px;
-                top: 0;
-                width: 350px;
-                height: 100vh;
-                background: white;
-                border-right: 1px solid #e5e7eb;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-                z-index: 9998;
-                transition: left 0.3s ease;
-                overflow-y: auto;
-                /* Fix for filter issues */
-                will-change: left;
-                backface-visibility: hidden;
-                transform-style: preserve-3d;
-            }
-
-            /* Fix for contrast filters affecting sidebar positioning */
-            body.accessibility-gray-contrast .accessibility-sidebar,
-            body.accessibility-high-contrast .accessibility-sidebar,
-            body.accessibility-negative-contrast .accessibility-sidebar {
-                position: fixed !important;
-                z-index: 9999 !important;
-            }
-
-            body.accessibility-gray-contrast .accessibility-sidebar.open,
-            body.accessibility-high-contrast .accessibility-sidebar.open,
-            body.accessibility-negative-contrast .accessibility-sidebar.open {
-                left: 0 !important;
-            }
-
-            .accessibility-sidebar.open {
-                left: 0;
+            .accessibility-button.hidden {
+                opacity: 0 !important;
+                visibility: hidden !important;
             }
 
             .accessibility-header {
-                padding: 20px;
-                background: #f8fafc;
-                border-bottom: 1px solid #e5e7eb;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                padding: 20px !important;
+                background: #f8fafc !important;
+                border-bottom: 1px solid #e5e7eb !important;
+                display: flex !important;
+                justify-content: space-between !important;
+                align-items: center !important;
             }
 
             .accessibility-header h3 {
-                margin: 0;
-                font-size: 18px;
-                font-weight: 600;
-                color: #1f2937;
+                margin: 0 !important;
+                font-size: 18px !important;
+                font-weight: 600 !important;
+                color: #1f2937 !important;
             }
 
             .close-btn {
-                background: none;
-                border: none;
-                font-size: 18px;
-                cursor: pointer;
-                color: #6b7280;
-                padding: 5px;
-                border-radius: 4px;
+                background: none !important;
+                border: none !important;
+                font-size: 18px !important;
+                cursor: pointer !important;
+                color: #6b7280 !important;
+                padding: 5px !important;
+                border-radius: 4px !important;
             }
 
             .close-btn:hover {
-                background: #e5e7eb;
-                color: #1f2937;
+                background: #e5e7eb !important;
+                color: #1f2937 !important;
             }
 
             .accessibility-content {
-                padding: 20px;
+                padding: 20px !important;
             }
 
             .accessibility-group {
-                margin-bottom: 24px;
+                margin-bottom: 24px !important;
             }
 
             .accessibility-group h4 {
-                margin: 0 0 12px 0;
-                font-size: 16px;
-                font-weight: 600;
-                color: #374151;
+                margin: 0 0 12px 0 !important;
+                font-size: 16px !important;
+                font-weight: 600 !important;
+                color: #374151 !important;
             }
 
             .accessibility-btn {
-                display: inline-block;
-                margin: 4px 8px 4px 0;
-                padding: 8px 16px;
-                background: #f3f4f6;
-                border: 1px solid #d1d5db;
-                border-radius: 6px;
-                color: #374151;
-                cursor: pointer;
-                font-size: 14px;
-                transition: all 0.2s ease;
+                display: inline-block !important;
+                margin: 4px 8px 4px 0 !important;
+                padding: 8px 16px !important;
+                background: #f3f4f6 !important;
+                border: 1px solid #d1d5db !important;
+                border-radius: 6px !important;
+                color: #374151 !important;
+                cursor: pointer !important;
+                font-size: 14px !important;
+                transition: all 0.2s ease !important;
             }
 
             .accessibility-btn:hover {
-                background: #e5e7eb;
-                border-color: #9ca3af;
+                background: #e5e7eb !important;
+                border-color: #9ca3af !important;
             }
 
             .accessibility-btn.active {
-                background: #2265CD;
-                color: white;
-                border-color: #2265CD;
+                background: #2265CD !important;
+                color: white !important;
+                border-color: #2265CD !important;
             }
 
             .font-controls {
-                display: flex;
-                align-items: center;
-                gap: 12px;
+                display: flex !important;
+                align-items: center !important;
+                gap: 12px !important;
             }
 
             .contrast-controls {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
             }
 
             .contrast-controls .accessibility-btn {
-                margin: 0;
-                width: 100%;
+                margin: 0 !important;
+                width: 100% !important;
             }
 
             #font-size-display {
-                font-weight: 600;
-                color: #374151;
-                min-width: 45px;
-                text-align: center;
+                font-weight: 600 !important;
+                color: #374151 !important;
+                min-width: 45px !important;
+                text-align: center !important;
             }
 
             .reset-btn {
-                width: 100%;
+                width: 100% !important;
                 background: #dc2626 !important;
                 color: white !important;
                 border-color: #dc2626 !important;
@@ -293,10 +299,6 @@ class AccessibilityHelper {
             }
 
             /* Accessibility Effects */
-            body.accessibility-large-font {
-                font-size: 120% !important;
-            }
-
             body.accessibility-gray-contrast {
                 filter: grayscale(100%);
             }
@@ -307,34 +309,6 @@ class AccessibilityHelper {
 
             body.accessibility-negative-contrast {
                 filter: invert(1) hue-rotate(180deg);
-            }
-
-            /* ВАЖНО: Изузеци за fixed елементе када су активни филтери */
-            body.accessibility-gray-contrast .accessibility-button,
-            body.accessibility-high-contrast .accessibility-button,
-            body.accessibility-negative-contrast .accessibility-button {
-                filter: none !important; /* Уклони филтер са иконице */
-                position: fixed !important;
-                left: 20px !important;
-                top: 50vh !important;
-                transform: translateY(-50%) !important;
-                z-index: 99999 !important;
-            }
-
-            body.accessibility-gray-contrast .accessibility-sidebar,
-            body.accessibility-high-contrast .accessibility-sidebar,
-            body.accessibility-negative-contrast .accessibility-sidebar {
-                filter: none !important; /* Уклони филтер са sidebar-а */
-                position: fixed !important;
-                z-index: 99998 !important;
-            }
-
-            body.accessibility-gray-contrast .accessibility-overlay,
-            body.accessibility-high-contrast .accessibility-overlay,
-            body.accessibility-negative-contrast .accessibility-overlay {
-                filter: none !important; /* Уклони филтер са overlay-а */
-                position: fixed !important;
-                z-index: 99997 !important;
             }
 
             body.accessibility-light-background {
@@ -376,86 +350,24 @@ class AccessibilityHelper {
             body.font-size-140 { font-size: 140% !important; }
             body.font-size-150 { font-size: 150% !important; }
 
-            /* Screen reader only text */
+            /* NE SKALIRAJU SE accessibility komponente */
+            .accessibility-no-scale,
+            .accessibility-no-scale *,
+            body[class*="font-size"] .accessibility-no-scale,
+            body[class*="font-size"] .accessibility-no-scale * {
+                font-size: initial !important;
+            }
+
             .sr-only {
-                position: absolute;
-                width: 1px;
-                height: 1px;
-                padding: 0;
-                margin: -1px;
-                overflow: hidden;
-                clip: rect(0, 0, 0, 0);
-                white-space: nowrap;
-                border: 0;
-            }
-
-            /* Overlay for sidebar */
-            .accessibility-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0,0,0,0.5);
-                z-index: 9997;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-                /* Fix for filter issues */
-                will-change: opacity;
-                backface-visibility: hidden;
-            }
-
-            /* Fix for contrast filters affecting overlay */
-            body.accessibility-gray-contrast .accessibility-overlay,
-            body.accessibility-high-contrast .accessibility-overlay,
-            body.accessibility-negative-contrast .accessibility-overlay {
-                position: fixed !important;
-                z-index: 9998 !important;
-            }
-
-            .accessibility-overlay.active {
-                opacity: 1;
-                visibility: visible;
-            }
-
-            /* Additional fixes for filter-affected elements */
-            body.accessibility-gray-contrast,
-            body.accessibility-high-contrast,
-            body.accessibility-negative-contrast {
-                /* Create new stacking context to isolate filters */
-                transform: translateZ(0);
-            }
-
-            /* Ensure fixed elements stay fixed when filters are applied */
-            body.accessibility-gray-contrast .accessibility-button,
-            body.accessibility-high-contrast .accessibility-button,
-            body.accessibility-negative-contrast .accessibility-button {
-                /* Force hardware acceleration */
-                transform: translateY(-50%) translateZ(0);
-                -webkit-transform: translateY(-50%) translateZ(0);
-            }
-
-            body.accessibility-gray-contrast .accessibility-button:hover,
-            body.accessibility-high-contrast .accessibility-button:hover,
-            body.accessibility-negative-contrast .accessibility-button:hover {
-                transform: translateY(-50%) scale(1.1) translateZ(0);
-                -webkit-transform: translateY(-50%) scale(1.1) translateZ(0);
-            }
-
-            /* Mobile responsive */
-            @media (max-width: 768px) {
-                .accessibility-sidebar {
-                    width: 100%;
-                    left: -100%;
-                }
-                
-                .accessibility-button {
-                    left: 10px;
-                    width: 45px;
-                    height: 45px;
-                    font-size: 16px;
-                }
+                position: absolute !important;
+                width: 1px !important;
+                height: 1px !important;
+                padding: 0 !important;
+                margin: -1px !important;
+                overflow: hidden !important;
+                clip: rect(0, 0, 0, 0) !important;
+                white-space: nowrap !important;
+                border: 0 !important;
             }
         `;
         document.head.appendChild(style);
@@ -465,30 +377,35 @@ class AccessibilityHelper {
         const button = document.getElementById('accessibility-button');
         const sidebar = document.getElementById('accessibility-sidebar');
         const closeBtn = document.getElementById('close-accessibility');
-
-        // Create overlay
-        const overlay = document.createElement('div');
-        overlay.className = 'accessibility-overlay';
-        document.body.appendChild(overlay);
+        const overlay = document.querySelector('.accessibility-overlay');
 
         // Open sidebar
         button.addEventListener('click', () => {
-            sidebar.classList.add('open');
-            overlay.classList.add('active');
-            button.style.display = 'none'; // Hide button when sidebar is open
+            sidebar.style.left = '0px';
+            overlay.style.opacity = '1';
+            overlay.style.visibility = 'visible';
+            button.style.opacity = '0';
+            button.style.visibility = 'hidden';
             document.body.style.overflow = 'hidden';
         });
 
         // Close sidebar
         const closeSidebar = () => {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-            button.style.display = 'block'; // Show button when sidebar is closed
+            sidebar.style.left = '-350px';
+            overlay.style.opacity = '0';
+            overlay.style.visibility = 'hidden';
+            button.style.opacity = '1';
+            button.style.visibility = 'visible';
             document.body.style.overflow = '';
         };
 
         closeBtn.addEventListener('click', closeSidebar);
-        overlay.addEventListener('click', closeSidebar);
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                closeSidebar();
+            }
+        });
 
         // ESC key to close
         document.addEventListener('keydown', (e) => {
@@ -562,6 +479,36 @@ class AccessibilityHelper {
         if (display) {
             display.textContent = `${this.settings.fontSize}%`;
         }
+
+        // Scale specific elements manually for better control (excluding accessibility elements)
+        this.scaleSpecificElements();
+    }
+
+    scaleSpecificElements() {
+        const scale = this.settings.fontSize / 100;
+        
+        // Scale hero sections (excluding accessibility elements)
+        const heroTitles = document.querySelectorAll('.hero h1:not(.accessibility-no-scale), .hero-section h1:not(.accessibility-no-scale), .text-3xl:not(.accessibility-no-scale), .text-4xl:not(.accessibility-no-scale), .text-5xl:not(.accessibility-no-scale)');
+        heroTitles.forEach(title => {
+            const baseSize = parseFloat(window.getComputedStyle(title).fontSize);
+            title.style.fontSize = `${baseSize * scale}px`;
+        });
+
+        // Scale navigation (excluding accessibility elements)
+        const navItems = document.querySelectorAll('nav a:not(.accessibility-no-scale), nav button:not(.accessibility-no-scale), nav .text-xl:not(.accessibility-no-scale)');
+        navItems.forEach(item => {
+            if (!item.closest('.accessibility-sidebar') && !item.classList.contains('accessibility-no-scale')) {
+                const baseSize = parseFloat(window.getComputedStyle(item).fontSize);
+                item.style.fontSize = `${baseSize * scale}px`;
+            }
+        });
+
+        // Scale card titles (excluding accessibility elements)
+        const cardTitles = document.querySelectorAll('.card h2:not(.accessibility-no-scale), .card h3:not(.accessibility-no-scale), .business-card h2:not(.accessibility-no-scale), .business-card h3:not(.accessibility-no-scale)');
+        cardTitles.forEach(title => {
+            const baseSize = parseFloat(window.getComputedStyle(title).fontSize);
+            title.style.fontSize = `${baseSize * scale}px`;
+        });
     }
 
     toggleContrast(type, button) {
@@ -581,9 +528,6 @@ class AccessibilityHelper {
             this.settings.contrast = type;
             document.body.classList.add(`accessibility-${type}-contrast`);
             button.classList.add('active');
-            
-            // Fix positioning after applying filters
-            this.fixPositioningAfterFilters();
         }
     }
 
@@ -628,6 +572,14 @@ class AccessibilityHelper {
             btn.classList.remove('active');
         });
 
+        // Reset manual scaling (excluding accessibility elements)
+        const scaledElements = document.querySelectorAll('[style*="font-size"]:not(.accessibility-no-scale)');
+        scaledElements.forEach(element => {
+            if (!element.closest('.accessibility-sidebar') && !element.classList.contains('accessibility-no-scale')) {
+                element.style.fontSize = '';
+            }
+        });
+
         // Update font size display
         const display = document.getElementById('font-size-display');
         if (display) {
@@ -660,9 +612,6 @@ class AccessibilityHelper {
             document.body.classList.add(`accessibility-${this.settings.contrast}-contrast`);
             const button = document.querySelector(`[data-action="${this.settings.contrast}-contrast"]`);
             if (button) button.classList.add('active');
-            
-            // Force repositioning of fixed elements after applying filters
-            this.fixPositioningAfterFilters();
         }
 
         // Apply background
@@ -678,35 +627,6 @@ class AccessibilityHelper {
             const button = document.querySelector('[data-action="readable-font"]');
             if (button) button.classList.add('active');
         }
-    }
-
-    /**
-     * Fix positioning issues after applying CSS filters
-     */
-    fixPositioningAfterFilters() {
-        // Force reflow to fix positioning issues
-        setTimeout(() => {
-            const button = document.getElementById('accessibility-button');
-            const sidebar = document.getElementById('accessibility-sidebar');
-            
-            if (button) {
-                // Force hardware acceleration and proper positioning
-                button.style.transform = 'translateY(-50%) translateZ(0)';
-                button.style.webkitTransform = 'translateY(-50%) translateZ(0)';
-                
-                // Trigger reflow
-                button.offsetHeight;
-            }
-            
-            if (sidebar) {
-                // Ensure sidebar positioning is correct
-                sidebar.style.transform = 'translateZ(0)';
-                sidebar.style.webkitTransform = 'translateZ(0)';
-                
-                // Trigger reflow
-                sidebar.offsetHeight;
-            }
-        }, 50);
     }
 }
 

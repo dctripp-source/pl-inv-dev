@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <!-- Accessibility Helper -->
-    <!-- Dodaj ovo u <head> sekciju app.blade.php prije postojećeg <style> taga -->
+    <!-- Navbar scroll functionality -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('nav');
@@ -243,6 +243,193 @@ document.addEventListener('DOMContentLoaded', function() {
             outline: 2px solid var(--primary-blue);
             outline-offset: 2px;
         }
+
+        /* NOVO: Font size scaling - uključuje i naslove */
+        body.font-size-80 { font-size: 80% !important; }
+        body.font-size-80 h1 { font-size: calc(2.25rem * 0.8) !important; }
+        body.font-size-80 h2 { font-size: calc(1.875rem * 0.8) !important; }
+        body.font-size-80 h3 { font-size: calc(1.5rem * 0.8) !important; }
+        body.font-size-80 h4 { font-size: calc(1.25rem * 0.8) !important; }
+        body.font-size-80 h5 { font-size: calc(1.125rem * 0.8) !important; }
+        body.font-size-80 h6 { font-size: calc(1rem * 0.8) !important; }
+
+        body.font-size-90 { font-size: 90% !important; }
+        body.font-size-90 h1 { font-size: calc(2.25rem * 0.9) !important; }
+        body.font-size-90 h2 { font-size: calc(1.875rem * 0.9) !important; }
+        body.font-size-90 h3 { font-size: calc(1.5rem * 0.9) !important; }
+        body.font-size-90 h4 { font-size: calc(1.25rem * 0.9) !important; }
+        body.font-size-90 h5 { font-size: calc(1.125rem * 0.9) !important; }
+        body.font-size-90 h6 { font-size: calc(1rem * 0.9) !important; }
+
+        body.font-size-100 { font-size: 100% !important; }
+        body.font-size-100 h1 { font-size: 2.25rem !important; }
+        body.font-size-100 h2 { font-size: 1.875rem !important; }
+        body.font-size-100 h3 { font-size: 1.5rem !important; }
+        body.font-size-100 h4 { font-size: 1.25rem !important; }
+        body.font-size-100 h5 { font-size: 1.125rem !important; }
+        body.font-size-100 h6 { font-size: 1rem !important; }
+
+        body.font-size-110 { font-size: 110% !important; }
+        body.font-size-110 h1 { font-size: calc(2.25rem * 1.1) !important; }
+        body.font-size-110 h2 { font-size: calc(1.875rem * 1.1) !important; }
+        body.font-size-110 h3 { font-size: calc(1.5rem * 1.1) !important; }
+        body.font-size-110 h4 { font-size: calc(1.25rem * 1.1) !important; }
+        body.font-size-110 h5 { font-size: calc(1.125rem * 1.1) !important; }
+        body.font-size-110 h6 { font-size: calc(1rem * 1.1) !important; }
+
+        body.font-size-120 { font-size: 120% !important; }
+        body.font-size-120 h1 { font-size: calc(2.25rem * 1.2) !important; }
+        body.font-size-120 h2 { font-size: calc(1.875rem * 1.2) !important; }
+        body.font-size-120 h3 { font-size: calc(1.5rem * 1.2) !important; }
+        body.font-size-120 h4 { font-size: calc(1.25rem * 1.2) !important; }
+        body.font-size-120 h5 { font-size: calc(1.125rem * 1.2) !important; }
+        body.font-size-120 h6 { font-size: calc(1rem * 1.2) !important; }
+
+        body.font-size-130 { font-size: 130% !important; }
+        body.font-size-130 h1 { font-size: calc(2.25rem * 1.3) !important; }
+        body.font-size-130 h2 { font-size: calc(1.875rem * 1.3) !important; }
+        body.font-size-130 h3 { font-size: calc(1.5rem * 1.3) !important; }
+        body.font-size-130 h4 { font-size: calc(1.25rem * 1.3) !important; }
+        body.font-size-130 h5 { font-size: calc(1.125rem * 1.3) !important; }
+        body.font-size-130 h6 { font-size: calc(1rem * 1.3) !important; }
+
+        body.font-size-140 { font-size: 140% !important; }
+        body.font-size-140 h1 { font-size: calc(2.25rem * 1.4) !important; }
+        body.font-size-140 h2 { font-size: calc(1.875rem * 1.4) !important; }
+        body.font-size-140 h3 { font-size: calc(1.5rem * 1.4) !important; }
+        body.font-size-140 h4 { font-size: calc(1.25rem * 1.4) !important; }
+        body.font-size-140 h5 { font-size: calc(1.125rem * 1.4) !important; }
+        body.font-size-140 h6 { font-size: calc(1rem * 1.4) !important; }
+
+        body.font-size-150 { font-size: 150% !important; }
+        body.font-size-150 h1 { font-size: calc(2.25rem * 1.5) !important; }
+        body.font-size-150 h2 { font-size: calc(1.875rem * 1.5) !important; }
+        body.font-size-150 h3 { font-size: calc(1.5rem * 1.5) !important; }
+        body.font-size-150 h4 { font-size: calc(1.25rem * 1.5) !important; }
+        body.font-size-150 h5 { font-size: calc(1.125rem * 1.5) !important; }
+        body.font-size-150 h6 { font-size: calc(1rem * 1.5) !important; }
+
+        /* Skaliraj navigaciju i logo */
+        body.font-size-110 nav .text-xl { font-size: calc(1.375rem * 1.1) !important; }
+        body.font-size-120 nav .text-xl { font-size: calc(1.375rem * 1.2) !important; }
+        body.font-size-130 nav .text-xl { font-size: calc(1.375rem * 1.3) !important; }
+        body.font-size-140 nav .text-xl { font-size: calc(1.375rem * 1.4) !important; }
+        body.font-size-150 nav .text-xl { font-size: calc(1.375rem * 1.5) !important; }
+
+        /* Skaliraj linkove u navigaciji (ne accessibility komponente) */
+        body.font-size-110 nav a:not(.accessibility-btn):not([class*="accessibility"]),
+        body.font-size-110 nav button:not(.accessibility-btn):not([class*="accessibility"]) { 
+            font-size: calc(1.125rem * 1.1) !important; 
+        }
+        
+        body.font-size-120 nav a:not(.accessibility-btn):not([class*="accessibility"]),
+        body.font-size-120 nav button:not(.accessibility-btn):not([class*="accessibility"]) { 
+            font-size: calc(1.125rem * 1.2) !important; 
+        }
+        
+        body.font-size-130 nav a:not(.accessibility-btn):not([class*="accessibility"]),
+        body.font-size-130 nav button:not(.accessibility-btn):not([class*="accessibility"]) { 
+            font-size: calc(1.125rem * 1.3) !important; 
+        }
+        
+        body.font-size-140 nav a:not(.accessibility-btn):not([class*="accessibility"]),
+        body.font-size-140 nav button:not(.accessibility-btn):not([class*="accessibility"]) { 
+            font-size: calc(1.125rem * 1.4) !important; 
+        }
+        
+        body.font-size-150 nav a:not(.accessibility-btn):not([class*="accessibility"]),
+        body.font-size-150 nav button:not(.accessibility-btn):not([class*="accessibility"]) { 
+            font-size: calc(1.125rem * 1.5) !important; 
+        }
+
+        /* Skaliraj hero naslove specifično */
+        body.font-size-110 .text-3xl { font-size: calc(1.875rem * 1.1) !important; }
+        body.font-size-110 .text-4xl { font-size: calc(2.25rem * 1.1) !important; }
+        body.font-size-110 .text-5xl { font-size: calc(3rem * 1.1) !important; }
+
+        body.font-size-120 .text-3xl { font-size: calc(1.875rem * 1.2) !important; }
+        body.font-size-120 .text-4xl { font-size: calc(2.25rem * 1.2) !important; }
+        body.font-size-120 .text-5xl { font-size: calc(3rem * 1.2) !important; }
+
+        body.font-size-130 .text-3xl { font-size: calc(1.875rem * 1.3) !important; }
+        body.font-size-130 .text-4xl { font-size: calc(2.25rem * 1.3) !important; }
+        body.font-size-130 .text-5xl { font-size: calc(3rem * 1.3) !important; }
+
+        body.font-size-140 .text-3xl { font-size: calc(1.875rem * 1.4) !important; }
+        body.font-size-140 .text-4xl { font-size: calc(2.25rem * 1.4) !important; }
+        body.font-size-140 .text-5xl { font-size: calc(3rem * 1.4) !important; }
+
+        body.font-size-150 .text-3xl { font-size: calc(1.875rem * 1.5) !important; }
+        body.font-size-150 .text-4xl { font-size: calc(2.25rem * 1.5) !important; }
+        body.font-size-150 .text-5xl { font-size: calc(3rem * 1.5) !important; }
+
+        /* VAŽNO: Osiguraj da se accessibility komponente NE skaliraju */
+        .accessibility-no-scale,
+        .accessibility-no-scale *,
+        .accessibility-button,
+        .accessibility-sidebar,
+        .accessibility-sidebar *,
+        .accessibility-btn,
+        .accessibility-header,
+        .accessibility-content,
+        .accessibility-group,
+        .accessibility-header h3,
+        .accessibility-group h4 {
+            font-size: initial !important;
+            transform: none !important;
+        }
+
+        /* Specifične veličine za accessibility komponente */
+        .accessibility-button {
+            font-size: 24px !important;
+            width: 60px !important;
+            height: 60px !important;
+        }
+
+        .accessibility-header h3 {
+            font-size: 18px !important;
+        }
+
+        .accessibility-group h4 {
+            font-size: 16px !important;
+        }
+
+        .accessibility-btn {
+            font-size: 14px !important;
+            padding: 8px 16px !important;
+        }
+
+        /* Dodatno osiguravanje da se accessibility elementi ne mijenjaju */
+        body[class*="font-size"] .accessibility-no-scale,
+        body[class*="font-size"] .accessibility-no-scale *,
+        body[class*="font-size"] .accessibility-button,
+        body[class*="font-size"] .accessibility-sidebar,
+        body[class*="font-size"] .accessibility-sidebar *,
+        body[class*="font-size"] .accessibility-btn,
+        body[class*="font-size"] .accessibility-header,
+        body[class*="font-size"] .accessibility-content,
+        body[class*="font-size"] .accessibility-group {
+            font-size: initial !important;
+            transform: none !important;
+        }
+
+        body[class*="font-size"] .accessibility-button {
+            font-size: 24px !important;
+            width: 60px !important;
+            height: 60px !important;
+        }
+
+        body[class*="font-size"] .accessibility-header h3 {
+            font-size: 18px !important;
+        }
+
+        body[class*="font-size"] .accessibility-group h4 {
+            font-size: 16px !important;
+        }
+
+        body[class*="font-size"] .accessibility-btn {
+            font-size: 14px !important;
+        }
         
         /* High contrast mode support */
         @media (prefers-contrast: high) {
@@ -287,8 +474,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="flex items-center">
                     <a href="{{ route('home') }}" class="flex items-center">
                         <!-- DODAJ LOGO OVDJE umjesto ikone -->
-                        <!-- <img src="path/to/logo.png" alt="Logo" class="h-8 w-auto mr-3"> -->
-                        <i class="fas fa-wheelchair text-2xl mr-3" style="color: #2265CD;"></i>
+                         <img src="{{ asset('storage/images/fond-logo.png') }}" style="width: 60px; height: 50px;" alt="Logo" class="h-8 w-auto mr-3"> 
                         <span class="text-xl font-bold transition-colors duration-300" style="color: {{ request()->routeIs('home') ? '#2265CD' : '#FFFFFF' }}; font-size: 1.375rem;">
                             {{ __sr('site_name_short', 'Biznis mreža INVRS', 'Бизнис мрежа ИНВРС') }}
                         </span>
@@ -411,9 +597,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <!-- About -->
                     <div class="md:col-span-2">
                         <div class="flex items-center mb-4">
-                            <i class="fas fa-wheelchair text-2xl mr-3"></i>
-                            <span class="text-xl font-bold">{{ __sr('site_name', 'Fond INVRS Biznis Mreža', 'Фонда ИНВРС Бизнис Мрежа') }}</span>
-                        </div>
+    <img src="{{ asset('storage/images/fond-logo.png') }}" style="width: 50px; height: 40px;" alt="Logo" class="object-contain mr-3"> 
+    <span class="text-xl font-bold">{{ __sr('site_name', 'Fond INVRS Biznis Mreža', 'Фонд ИНВРС Бизнис Мрежа') }}</span>
+</div>
                         <p class="text-blue-100 mb-4">
                             {{ __sr('footer_description', 'Platforma koja povezuje invalide i njihove biznise sa zajednicom, omogućavajući im lakše pronalaženje podrške i resursa.', 'Платформа која повезује инвалиде и њихове бизнисе са заједницом, омогућавајући им лакше проналажење подршке и ресурса.') }}
                         </p>
@@ -448,6 +634,9 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         </footer>
     </div>
+
+    <!-- NOVO: Accessibility Helper Script -->
+    <script src="{{ asset('js/accessibility-helper.js') }}" defer></script>
 
     <!-- Additional Scripts -->
     @stack('scripts')

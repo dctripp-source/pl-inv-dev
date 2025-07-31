@@ -32,7 +32,7 @@
                 </p>
                 
                 <!-- CTA Button -->
-                <div class="mb-12">
+                <div class="mb-12" style="margin-top: 7%;">
                     <a href="{{ route('business.create') }}" class="inline-block font-semibold px-8 py-4 rounded-full text-lg transition-colors duration-300 shadow-lg hover:shadow-xl text-white" style="background-color: #2265CD;" onmouseover="this.style.backgroundColor='#1c56b3'" onmouseout="this.style.backgroundColor='#2265CD'">
                         {{ __sr('cta_button', 'Predstavi svoj biznis', 'Представи свој бизнис') }}
                     </a>
@@ -59,9 +59,9 @@
             <!-- Korak 1 -->
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona raketa -->
-                <div class="mb-6">
-                    <span style="font-size: 28px; font-weight: 700; color: #2563EB;">1</span>
-                </div>
+                <div class="mb-6 flex justify-center">
+					<img src="{{ asset('storage/images/register.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+				</div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">
                     {{ __sr('step1_title', 'Prijavite svoj biznis', 'Пријавите свој бизнис') }}
                 </h3>
@@ -73,9 +73,9 @@
             <!-- Korak 2 -->
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona sijalica -->
-                <div class="mb-6">
-                    <span style="font-size: 28px; font-weight: 700; color: #2563EB;">2</span>
-                </div>
+                <div class="mb-6 flex justify-center">
+					<img src="{{ asset('storage/images/chk.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+				</div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">
                     {{ __sr('step2_title', 'Brza Verifikacija', 'Брза Верификација') }}
                 </h3>
@@ -87,9 +87,9 @@
             <!-- Korak 3 -->
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona kvadrata -->
-                <div class="mb-6">
-                    <span style="font-size: 28px; font-weight: 700; color: #2563EB;">3</span>
-                </div>
+                <div class="mb-6 flex justify-center">
+					<img src="{{ asset('storage/images/comm.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+				</div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">
                     {{ __sr('step3_title', 'Povežite se sa zajednicom', 'Повежите се са заједницом') }}
                 </h3>
@@ -155,8 +155,8 @@
             @endforeach
         </div>
         
-        <div class="text-center mt-8">
-            <a href="{{ route('business.index') }}" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors">
+        <div class="text-center mt-8" style="margin-top: 5%;">
+            <a href="{{ route('business.index') }}" class="bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600 transition-colors" style="background-color: #2265cd;">
                 {{ __sr('view_all_businesses', 'Pogledaj sve biznise', 'Погледај све бизнисе') }}
             </a>
         </div>
@@ -190,7 +190,7 @@
             @endforeach
         </div>
         
-        <div class="text-center mt-8">
+        <div class="text-center mt-8" style="margin-top: 5%;">
             <a href="{{ route('category.index') }}" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
                 {{ __sr('view_all_categories', 'Sve kategorije', 'Све категорије') }}
             </a>
