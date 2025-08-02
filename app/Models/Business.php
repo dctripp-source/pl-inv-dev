@@ -35,7 +35,8 @@ class Business extends Model
         'website',
         'social_media',
         'status',
-        'admin_notes'
+        'admin_notes',
+        'working_hours'
     ];
 
     protected $casts = [
@@ -43,7 +44,7 @@ class Business extends Model
         'approved_at' => 'datetime',
     ];
 
-    // Relacije ostaju iste...
+    // RELACIJE
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'business_categories');
@@ -59,11 +60,19 @@ class Business extends Model
         return $this->hasOne(BusinessImage::class)->where('is_primary', true);
     }
 
+    public function secondaryImages()
+    {
+        return $this->hasMany(BusinessImage::class)
+                    ->where('is_primary', false)
+                    ->orderBy('sort_order');
+    }
+
     public function approvedBy()
     {
         return $this->belongsTo(User::class, 'approved_by');
     }
 
+    // SCOPES
     public function scopeApproved($query)
     {
         return $query->where('status', 'approved');
@@ -74,32 +83,162 @@ class Business extends Model
         return $query->where('status', 'pending');
     }
 
+    // ACCESSORS
     public function getFullOwnerNameAttribute()
     {
         return $this->owner_first_name . ' ' . $this->owner_last_name;
     }
 
     /**
-     * Generiši transliteracije pri čuvanju
+     * Accessor za URL glavne slike
      */
-    protected static function boot()
+    public function getPrimaryImageUrlAttribute()
     {
-        parent::boot();
+        $primaryImage = $this->primaryImage;
         
-        static::creating(function ($business) {
-            $business->slug = Str::slug($business->business_name);
-            $business->generateTransliterations();
-        });
+        if ($primaryImage && $primaryImage->image_path) {
+            return $primaryImage->url;
+        }
         
-        static::updating(function ($business) {
-            if ($business->isDirty('business_name')) {
-                $business->slug = Str::slug($business->business_name);
-            }
+        // Fallback - prva slika ako nema primary
+        $firstImage = $this->images()->first();
+        if ($firstImage) {
+            return $firstImage->url;
+        }
+        
+        // Placeholder slika
+        return asset('images/placeholder-business.jpg');
+    }
+
+    /**
+     * Accessor za sve URLs slika
+     */
+    public function getImageUrlsAttribute()
+    {
+        return $this->images->map(function ($image) {
+            return $image->url;
+        })->toArray();
+    }
+
+    /**
+     * Broj slika
+     */
+    public function getImagesCountAttribute()
+    {
+        return $this->images()->count();
+    }
+
+    // TRANSLITERATIONS
+    public function getDisplayName($script = 'latin')
+    {
+        if ($script === 'cyrillic') {
+            return $this->business_name_cyrillic ?: $this->business_name;
+        }
+        return $this->business_name_latin ?: $this->business_name;
+    }
+
+    public function getDisplayDescription($script = 'latin')
+    {
+        if ($script === 'cyrillic') {
+            return $this->description_cyrillic ?: $this->description;
+        }
+        return $this->description_latin ?: $this->description;
+    }
+
+    public function getDisplayServices($script = 'latin')
+    {
+        if ($script === 'cyrillic') {
+            return $this->services_cyrillic ?: $this->services;
+        }
+        return $this->services_latin ?: $this->services;
+    }
+
+    public function getDisplayAddress($script = 'latin')
+    {
+        if ($script === 'cyrillic') {
+            return $this->address_cyrillic ?: $this->address;
+        }
+        return $this->address_latin ?: $this->address;
+    }
+
+    public function getDisplayCity($script = 'latin')
+    {
+        if ($script === 'cyrillic') {
+            return $this->city_cyrillic ?: $this->city;
+        }
+        return $this->city_latin ?: $this->city;
+    }
+
+    public function getDisplayOwnerName($script = 'latin')
+    {
+        $firstName = $script === 'cyrillic' 
+            ? ($this->owner_first_name_cyrillic ?: $this->owner_first_name)
+            : ($this->owner_first_name_latin ?: $this->owner_first_name);
             
-            // Generiši transliteracije za izmenjene vrednosti
-            if ($business->isDirty(['business_name', 'description', 'services', 'address', 'city'])) {
-                $business->generateTransliterations();
-            }
+        $lastName = $script === 'cyrillic'
+            ? ($this->owner_last_name_cyrillic ?: $this->owner_last_name) 
+            : ($this->owner_last_name_latin ?: $this->owner_last_name);
+            
+        return trim($firstName . ' ' . $lastName);
+    }
+
+    // Helper metode za trenutni script
+    public function getDisplayNameCurrent()
+    {
+        return $this->getDisplayName(getCurrentScript());
+    }
+
+    public function getDisplayDescriptionCurrent()
+    {
+        return $this->getDisplayDescription(getCurrentScript());
+    }
+
+    public function getDisplayServicesCurrent()
+    {
+        return $this->getDisplayServices(getCurrentScript());
+    }
+
+    public function getDisplayAddressCurrent()
+    {
+        return $this->getDisplayAddress(getCurrentScript());
+    }
+
+    public function getDisplayCityCurrent()
+    {
+        return $this->getDisplayCity(getCurrentScript());
+    }
+
+    // IMAGE HELPER METHODS
+    /**
+     * Da li biznis ima slike
+     */
+    public function hasImages()
+    {
+        return $this->images()->exists();
+    }
+
+    /**
+     * Dodaj sliku
+     */
+    public function addImage($imagePath, $altText = null, $isPrimary = false)
+    {
+        $sortOrder = $this->images()->max('sort_order') ?? -1;
+        
+        return $this->images()->create([
+            'image_path' => $imagePath,
+            'alt_text' => $altText ?: $this->business_name,
+            'is_primary' => $isPrimary,
+            'sort_order' => $sortOrder + 1
+        ]);
+    }
+
+    /**
+     * Ukloni sve slike
+     */
+    public function clearImages()
+    {
+        $this->images()->each(function ($image) {
+            $image->delete(); // Ovo će triggrovati brisanje fajla
         });
     }
 
@@ -145,84 +284,34 @@ class Business extends Model
     }
 
     /**
-     * Accessor za različita pisma
+     * KOMBINOVANI BOOT METOD
      */
-    public function getDisplayName($script = 'latin')
+    protected static function boot()
     {
-        if ($script === 'cyrillic') {
-            return $this->business_name_cyrillic ?: $this->business_name;
-        }
-        return $this->business_name_latin ?: $this->business_name;
-    }
-
-    public function getDisplayDescription($script = 'latin')
-    {
-        if ($script === 'cyrillic') {
-            return $this->description_cyrillic ?: $this->description;
-        }
-        return $this->description_latin ?: $this->description;
-    }
-
-    public function getDisplayServices($script = 'latin')
-    {
-        if ($script === 'cyrillic') {
-            return $this->services_cyrillic ?: $this->services;
-        }
-        return $this->services_latin ?: $this->services;
-    }
-
-    public function getDisplayAddress($script = 'latin')
-    {
-        if ($script === 'cyrillic') {
-            return $this->address_cyrillic ?: $this->address;
-        }
-        return $this->address_latin ?: $this->address;
-    }
-
-    public function getDisplayCity($script = 'latin')
-    {
-        if ($script === 'cyrillic') {
-            return $this->city_cyrillic ?: $this->city;
-        }
-        return $this->city_latin ?: $this->city;
-    }
-
-    // DODAJ NA KRAJ - Helper metode za trenutni script
-    public function getDisplayNameCurrent()
-    {
-        return $this->getDisplayName(getCurrentScript());
-    }
-
-    public function getDisplayDescriptionCurrent()
-    {
-        return $this->getDisplayDescription(getCurrentScript());
-    }
-
-    public function getDisplayServicesCurrent()
-    {
-        return $this->getDisplayServices(getCurrentScript());
-    }
-
-    public function getDisplayAddressCurrent()
-    {
-        return $this->getDisplayAddress(getCurrentScript());
-    }
-
-    public function getDisplayCityCurrent()
-    {
-        return $this->getDisplayCity(getCurrentScript());
-    }
-	
-	public function getDisplayOwnerName($script = 'latin')
-	{
-    $firstName = $script === 'cyrillic' 
-        ? ($this->owner_first_name_cyrillic ?: $this->owner_first_name)
-        : ($this->owner_first_name_latin ?: $this->owner_first_name);
+        parent::boot();
         
-    $lastName = $script === 'cyrillic'
-        ? ($this->owner_last_name_cyrillic ?: $this->owner_last_name) 
-        : ($this->owner_last_name_latin ?: $this->owner_last_name);
+        // Postojeća logika za transliteracije
+        static::creating(function ($business) {
+            $business->slug = Str::slug($business->business_name);
+            $business->generateTransliterations();
+        });
         
-    return trim($firstName . ' ' . $lastName);
-	}
+        static::updating(function ($business) {
+            if ($business->isDirty('business_name')) {
+                $business->slug = Str::slug($business->business_name);
+            }
+            
+            // Generiši transliteracije za izmenjene vrednosti
+            if ($business->isDirty(['business_name', 'description', 'services', 'address', 'city'])) {
+                $business->generateTransliterations();
+            }
+        });
+
+        // NOVA logika za brisanje slika
+        static::deleting(function ($business) {
+            $business->images()->each(function ($image) {
+                $image->delete(); // Ovo će triggrovati brisanje fajla iz BusinessImage modela
+            });
+        });
+    }
 }

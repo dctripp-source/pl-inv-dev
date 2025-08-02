@@ -14,11 +14,66 @@
     
     <!-- Accessibility Helper -->
     <!-- Navbar scroll functionality -->
+	
+	<style>
+        /* Override postojećih Tailwind klasa za šire kontejnere */
+        .max-w-7xl {
+            max-width: 88rem !important; /* 25% manji margine - povećano sa 80rem na 88rem */
+        }
+        
+        /* Smanjeni padding za responzivnost */
+        @media (min-width: 640px) {
+            .sm\:px-6 {
+                padding-left: 1.25rem !important;
+                padding-right: 1.25rem !important;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .lg\:px-8 {
+                padding-left: 1.75rem !important;
+                padding-right: 1.75rem !important;
+            }
+        }
+        
+        /* Alternative - kreiranje potpuno custom kontejnera */
+        .container-platform {
+            max-width: 88rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        
+        @media (min-width: 640px) {
+            .container-platform {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .container-platform {
+                padding-left: 1.75rem;
+                padding-right: 1.75rem;
+            }
+        }
+        
+        @media (min-width: 1280px) {
+            .container-platform {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+    </style>
 <script>
+
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('nav');
-    const navLinks = document.querySelectorAll('nav a, nav button');
-    const logo = document.querySelector('nav .text-xl');
+    const navLinks = document.querySelectorAll('nav a:not(.logo-link)');
+    const logo = document.querySelector('.logo-text'); // Dodajte ovu klasu logo tekstu
+    const ctaButton = document.querySelector('.cta-button');
+    const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
     
     function updateNavbar() {
         if (window.scrollY > 50) {
@@ -26,30 +81,40 @@ document.addEventListener('DOMContentLoaded', function() {
             navbar.classList.remove('bg-transparent', 'border-transparent');
             navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Tamni tekst
+            // Tamni tekst za linkove
             navLinks.forEach(link => {
                 link.classList.remove('text-white', 'hover:text-blue-200');
                 link.classList.add('text-gray-700', 'hover:text-primary');
             });
             
+            // Logo boja kada se skrola - CRNA
             if (logo) {
-                logo.classList.remove('text-white');
-                logo.classList.add('text-gray-900');
+                logo.style.color = '#2265CD';
+            }
+            
+            // CTA button ostaje bijel tekst
+            if (ctaButton) {
+                ctaButton.style.color = '#fff';
             }
         } else {
             // Vrh stranice - transparentan
-            navbar.classList.remove('bg-transparent', 'border-transparent');
-            navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
+            navbar.classList.add('bg-transparent', 'border-transparent');
+            navbar.classList.remove('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Tamni tekst
+            // Bijeli tekst za linkove
             navLinks.forEach(link => {
-                link.classList.remove('text-white', 'hover:text-blue-200');
-                link.classList.add('text-gray-700', 'hover:text-primary');
+                link.classList.add('text-white', 'hover:text-blue-200');
+                link.classList.remove('text-gray-700', 'hover:text-primary');
             });
             
+            // Logo boja na vrhu - PLAVA
             if (logo) {
-                logo.classList.remove('text-gray-900');
-                logo.classList.add('text-white');
+                logo.style.color = '#2265CD';
+            }
+            
+            // CTA button ostaje bijel tekst
+            if (ctaButton) {
+                ctaButton.style.color = '#fff';
             }
         }
     }
@@ -82,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Logo boja kada se skrola
             if (logo) {
-                logo.style.color = '#262626';
+                logo.style.color = '#2265CD';
             }
             
             // CTA button ostaje bijel tekst
@@ -105,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (isHomePage) {
                     logo.style.color = '#2265CD'; // Plavo na početnoj
                 } else {
-                    logo.style.color = '#fff'; // Bijelo na ostalim
+                    logo.style.color = '#2265CD'; // Bijelo na ostalim
                 }
             }
             
@@ -614,6 +679,60 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     </style>
+	
+	<style>
+.fade-in-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.8s ease-out;
+}
+
+.fade-in-bottom {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s ease-out;
+}
+
+/* Animirano stanje - vidljivo i na mestu */
+.fade-in-left.animated {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.fade-in-bottom.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Delay klase */
+.delay-100 { transition-delay: 0.1s; }
+.delay-200 { transition-delay: 0.2s; }
+.delay-300 { transition-delay: 0.3s; }
+.delay-400 { transition-delay: 0.4s; }
+.delay-500 { transition-delay: 0.5s; }
+
+/* Responsive - manji pomak na mobilnim */
+@media (max-width: 768px) {
+    .fade-in-left {
+        transform: translateX(-30px);
+    }
+    
+    .fade-in-bottom {
+        transform: translateY(30px);
+    }
+}
+
+/* Hover efekti za animirane elemente */
+.fade-in-left.animated:hover,
+.fade-in-bottom.animated:hover {
+    transform: scale(1.02);
+}
+
+/* Smooth scroll */
+html {
+    scroll-behavior: smooth;
+}
+</style>
 </head>
 <body>
     <!-- Skip to main content link for screen readers -->
@@ -628,14 +747,28 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <div class="flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center">
-                        <!-- DODAJ LOGO OVDJE umjesto ikone -->
-                         <img src="{{ asset('storage/images/fond-logo.png') }}" style="width: 60px; height: 50px;" alt="Logo" class="h-8 w-auto mr-3"> 
-                        <span class="text-xl font-bold transition-colors duration-300" style="color: {{ request()->routeIs('home') ? '#2265CD' : '#FFFFFF' }}; font-size: 1.375rem;">
-                            {{ __sr('site_name_short', 'Biznis mreža INVRS', 'Бизнис мрежа ИНВРС') }}
-                        </span>
-                    </a>
-                </div>
+    <a href="{{ route('home') }}" class="flex items-center logo-link">
+        <!-- Prvi logo - Fond INVRS -->
+        <img src="{{ asset('storage/images/fond-logo.png') }}" 
+             style="width: 60px; height: 50px;" 
+             alt="Fond INVRS Logo" 
+             class="h-8 w-auto mr-3" /> 
+			 
+		<!-- Drugi logo - Ministarstvo RS -->
+        <img src="{{ asset('storage/images/rs-logo.png') }}" 
+             style="width: 60px; height: 50px;" 
+             alt="Ministarstvo Republike Srpske Logo" 
+             class="h-8 w-auto mr-3" />
+        
+        <!-- Tekst logotipa -->
+        <span class="logo-text text-xl font-bold transition-colors duration-300 mr-4" style="font-size: 1.375rem;">
+            {{ __sr('site_name_short', 'Biznis mreža INVRS', 'Бизнис мрежа ИНВРС') }}
+        </span>
+        
+        
+        
+    </a>
+</div>
                 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-8">
@@ -797,6 +930,480 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <!-- Additional Scripts -->
     @stack('scripts')
+	
+	
+<script>
+class BusinessImageUploader {
+    constructor() {
+        this.maxFiles = 10; // Maksimalno slika
+        this.maxFileSize = 10 * 1024 * 1024; // 10MB
+        this.allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+        this.uploadedImages = [];
+        this.isUploading = false;
+        
+        this.init();
+    }
+
+    init() {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.setupEventListeners());
+        } else {
+            this.setupEventListeners();
+        }
+    }
+
+    setupEventListeners() {
+        const fileInput = document.getElementById('image-input');
+        const uploadZone = document.getElementById('upload-zone');
+        const clearAllBtn = document.getElementById('clear-all-images');
+        const form = document.getElementById('business-form');
+
+        if (!fileInput || !uploadZone) return;
+
+        // File input change
+        fileInput.addEventListener('change', (e) => this.handleFileSelection(e));
+
+        // Drag & Drop
+        this.setupDragAndDrop(uploadZone);
+
+        // Clear all images
+        if (clearAllBtn) {
+            clearAllBtn.addEventListener('click', () => this.clearAllImages());
+        }
+
+        // Form submit
+        if (form) {
+            form.addEventListener('submit', (e) => this.handleFormSubmit(e));
+        }
+
+        // Load existing images from session
+        this.loadExistingImages();
+    }
+
+    setupDragAndDrop(uploadZone) {
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, this.preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, () => {
+                uploadZone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadZone.addEventListener(eventName, () => {
+                uploadZone.classList.remove('dragover');
+            });
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            const files = Array.from(e.dataTransfer.files);
+            this.processFiles(files);
+        });
+
+        // Click to upload
+        uploadZone.addEventListener('click', (e) => {
+            if (e.target.closest('button') || e.target.closest('input')) return;
+            document.getElementById('image-input').click();
+        });
+    }
+
+    preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    handleFileSelection(e) {
+        const files = Array.from(e.target.files);
+        this.processFiles(files);
+        e.target.value = ''; // Reset input
+    }
+
+    processFiles(files) {
+        if (this.isUploading) {
+            this.showError('Upload je već u toku. Molimo sačekajte.');
+            return;
+        }
+
+        // Provjeri limit
+        if (this.uploadedImages.length + files.length > this.maxFiles) {
+            this.showError(`Možete uploadovati maksimalno ${this.maxFiles} slika. Trenutno imate ${this.uploadedImages.length}.`);
+            return;
+        }
+
+        // Validiraj fajlove
+        const validFiles = files.filter(file => this.validateFile(file));
+        
+        if (validFiles.length === 0) return;
+
+        // Upload fajlove jedan po jedan
+        this.uploadFiles(validFiles);
+    }
+
+    validateFile(file) {
+        // Tip fajla
+        if (!this.allowedTypes.includes(file.type)) {
+            this.showError(`${file.name}: Nepodržan format. Koristite JPG, PNG ili WebP.`);
+            return false;
+        }
+
+        // Veličina
+        if (file.size > this.maxFileSize) {
+            this.showError(`${file.name}: Fajl je prevelik. Maksimalno 10MB.`);
+            return false;
+        }
+
+        return true;
+    }
+
+    async uploadFiles(files) {
+        this.isUploading = true;
+        this.showLoading(true);
+        
+        for (let file of files) {
+            try {
+                await this.uploadSingleFile(file);
+            } catch (error) {
+                console.error('Upload error:', error);
+                this.showError(`Greška pri upload-u ${file.name}: ${error.message}`);
+            }
+        }
+        
+        this.isUploading = false;
+        this.showLoading(false);
+    }
+
+    uploadSingleFile(file) {
+        return new Promise((resolve, reject) => {
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
+
+            // VAŽNO: Koristi /biznisi/ URL umesto /business/
+            fetch('/biznisi/upload-sliku', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.uploadedImages.push(data.image);
+                    this.addImageToPreview(data.image);
+                    this.updateImageCount();
+                    resolve(data);
+                } else {
+                    reject(new Error(data.message || 'Upload failed'));
+                }
+            })
+            .catch(error => {
+                reject(error);
+            });
+        });
+    }
+
+    addImageToPreview(imageData) {
+        const container = document.getElementById('uploaded-images-container');
+        const grid = document.getElementById('uploaded-images-grid');
+        
+        if (!container || !grid) return;
+
+        // Kreiraj image card
+        const imageCard = this.createImageCard(imageData);
+        grid.appendChild(imageCard);
+
+        // Pokaži container
+        container.classList.remove('hidden');
+    }
+
+    createImageCard(imageData) {
+        const div = document.createElement('div');
+        div.className = 'image-preview-card fade-in-left';
+        div.dataset.imagePath = imageData.path;
+
+        div.innerHTML = `
+            <img src="${imageData.url}" alt="${imageData.original_name}" loading="lazy">
+            
+            <div class="image-actions">
+                <button type="button" 
+                        class="delete-image-btn" 
+                        onclick="window.imageUploader.deleteImage('${imageData.path}')"
+                        title="Obriši sliku">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="p-3">
+                <p class="text-xs text-gray-600 truncate mb-1" title="${imageData.original_name}">
+                    ${imageData.original_name}
+                </p>
+                <div class="flex justify-between text-xs text-gray-500">
+                    <span>${imageData.info.width} × ${imageData.info.height}</span>
+                    <span>${imageData.info.size_formatted}</span>
+                </div>
+                ${this.uploadedImages.length === 1 ? '<div class="text-xs text-blue-600 font-medium mt-1">Glavna slika</div>' : ''}
+            </div>
+        `;
+
+        // Dodaj fade-in animaciju
+        setTimeout(() => {
+            div.classList.add('animated');
+        }, 50);
+
+        return div;
+    }
+
+    async deleteImage(imagePath) {
+        if (!confirm('Da li ste sigurni da želite da obrišete ovu sliku?')) {
+            return;
+        }
+
+        try {
+            // VAŽNO: Koristi /biznisi/ URL umesto /business/
+            const response = await fetch('/biznisi/obrisi-sliku', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ image_path: imagePath })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Ukloni iz array-a
+                this.uploadedImages = this.uploadedImages.filter(img => img.path !== imagePath);
+                
+                // Ukloni iz DOM-a
+                const imageCard = document.querySelector(`[data-image-path="${imagePath}"]`);
+                if (imageCard) {
+                    imageCard.style.opacity = '0';
+                    imageCard.style.transform = 'scale(0.8)';
+                    setTimeout(() => {
+                        imageCard.remove();
+                        this.updateImageCount();
+                        this.updateMainImageLabels();
+                    }, 200);
+                }
+
+                this.showSuccess('Slika je uspešno obrisana.');
+            } else {
+                this.showError(data.message || 'Greška pri brisanju slike.');
+            }
+        } catch (error) {
+            console.error('Delete error:', error);
+            this.showError('Greška pri brisanju slike.');
+        }
+    }
+
+    async clearAllImages() {
+        if (this.uploadedImages.length === 0) return;
+
+        if (!confirm(`Da li ste sigurni da želite da obrišete sve slike (${this.uploadedImages.length})?`)) {
+            return;
+        }
+
+        try {
+            // VAŽNO: Koristi /biznisi/ URL umesto /business/
+            const response = await fetch('/biznisi/obrisi-sve-slike', {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                this.uploadedImages = [];
+                document.getElementById('uploaded-images-grid').innerHTML = '';
+                document.getElementById('uploaded-images-container').classList.add('hidden');
+                this.updateImageCount();
+                this.showSuccess('Sve slike su obrisane.');
+            } else {
+                this.showError(data.message || 'Greška pri brisanju slika.');
+            }
+        } catch (error) {
+            console.error('Clear all error:', error);
+            this.showError('Greška pri brisanju slika.');
+        }
+    }
+
+    async loadExistingImages() {
+        try {
+            // VAŽNO: Koristi /biznisi/ URL umesto /business/
+            const response = await fetch('/biznisi/uploadovane-slike', {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.images.length > 0) {
+                this.uploadedImages = data.images;
+                
+                data.images.forEach(imageData => {
+                    this.addImageToPreview(imageData);
+                });
+                
+                this.updateImageCount();
+            }
+        } catch (error) {
+            console.error('Load existing images error:', error);
+        }
+    }
+
+    updateImageCount() {
+        const countEl = document.getElementById('images-count');
+        if (countEl) {
+            countEl.textContent = this.uploadedImages.length;
+        }
+
+        // Sakrij container ako nema slika
+        if (this.uploadedImages.length === 0) {
+            const container = document.getElementById('uploaded-images-container');
+            if (container) {
+                container.classList.add('hidden');
+            }
+        }
+    }
+
+    updateMainImageLabels() {
+        const cards = document.querySelectorAll('.image-preview-card');
+        cards.forEach((card, index) => {
+            const mainLabel = card.querySelector('.text-blue-600');
+            if (mainLabel) {
+                mainLabel.remove();
+            }
+
+            if (index === 0) {
+                const infoDiv = card.querySelector('.p-3');
+                if (infoDiv) {
+                    const label = document.createElement('div');
+                    label.className = 'text-xs text-blue-600 font-medium mt-1';
+                    label.textContent = 'Glavna slika';
+                    infoDiv.appendChild(label);
+                }
+            }
+        });
+    }
+
+    showLoading(show) {
+        const loadingEl = document.getElementById('upload-loading');
+        if (loadingEl) {
+            if (show) {
+                loadingEl.classList.remove('hidden');
+            } else {
+                loadingEl.classList.add('hidden');
+            }
+        }
+    }
+
+    showError(message) {
+        this.clearMessages();
+        
+        const errorContainer = document.getElementById('image-errors');
+        if (errorContainer) {
+            errorContainer.innerHTML = `
+                <div class="image-error fade-in-left">
+                    <div class="flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                </div>
+            `;
+            errorContainer.classList.remove('hidden');
+
+            // Auto hide nakon 5 sekundi
+            setTimeout(() => {
+                this.clearMessages();
+            }, 5000);
+        }
+    }
+
+    showSuccess(message) {
+        this.clearMessages();
+        
+        const errorContainer = document.getElementById('image-errors');
+        if (errorContainer) {
+            errorContainer.innerHTML = `
+                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg fade-in-left">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        <span>${message}</span>
+                    </div>
+                </div>
+            `;
+            errorContainer.classList.remove('hidden');
+
+            // Auto hide nakon 3 sekundi
+            setTimeout(() => {
+                this.clearMessages();
+            }, 3000);
+        }
+    }
+
+    clearMessages() {
+        const errorContainer = document.getElementById('image-errors');
+        if (errorContainer) {
+            errorContainer.innerHTML = '';
+            errorContainer.classList.add('hidden');
+        }
+    }
+
+    handleFormSubmit(e) {
+        const submitBtn = document.getElementById('submit-button');
+        const submitText = document.getElementById('submit-text');
+        const submitLoading = document.getElementById('submit-loading');
+
+        if (submitBtn && submitText && submitLoading) {
+            submitText.classList.add('hidden');
+            submitLoading.classList.remove('hidden');
+            submitBtn.disabled = true;
+        }
+
+        // Form će se submit-ovati normalno
+        // Slike su već uploadovane i čuvaju se u session-u
+    }
+}
+
+// Inicijalizuj uploader samo na create stranici
+document.addEventListener('DOMContentLoaded', function() {
+    // Provjeri da li smo na create stranici
+    if (document.getElementById('business-form')) {
+        // Kreiraj CSRF meta tag ako ne postoji
+        if (!document.querySelector('meta[name="csrf-token"]')) {
+            const meta = document.createElement('meta');
+            meta.name = 'csrf-token';
+            meta.content = document.querySelector('input[name="_token"]')?.value || '';
+            document.head.appendChild(meta);
+        }
+
+        // Kreiraj global instancu
+        window.imageUploader = new BusinessImageUploader();
+    }
+});
+
+// Helper funkcije za global pristup
+window.deleteImage = function(imagePath) {
+    if (window.imageUploader) {
+        window.imageUploader.deleteImage(imagePath);
+    }
+};
+
+window.clearAllImages = function() {
+    if (window.imageUploader) {
+        window.imageUploader.clearAllImages();
+    }
+};
+</script>
 
 </body>
 </html>

@@ -21,6 +21,12 @@ Route::prefix('biznisi')->name('business.')->group(function () {
     Route::post('/prijavi', [BusinessController::class, 'store'])->name('store');
     Route::get('/uspeh', [BusinessController::class, 'success'])->name('success');
     Route::get('/{slug}', [BusinessController::class, 'show'])->name('show');
+    
+    // AJAX rute za upload slika - OVE SU KLJUČNE!
+    Route::post('/upload-sliku', [BusinessController::class, 'uploadImage'])->name('upload.image');
+    Route::delete('/obrisi-sliku', [BusinessController::class, 'deleteImage'])->name('delete.image');
+    Route::get('/uploadovane-slike', [BusinessController::class, 'getUploadedImages'])->name('uploaded.images');
+    Route::delete('/obrisi-sve-slike', [BusinessController::class, 'clearUploadedImages'])->name('clear.images');
 });
 
 // Category routes

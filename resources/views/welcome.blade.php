@@ -47,16 +47,15 @@
 </section>
 
 <!-- Kako Funkcioniše - 3 Koraka -->
-<section class="py-20 bg-gray-50" style=" height: 90vh; background-image: url('{{ asset('storage/images/bck2.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
-
+<section class="py-20 bg-gray-50 flex items-center justify-center" style="height: 90vh; background-image: url('{{ asset('storage/images/bck2.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style="padding: 8px 24px; border-radius: 8px; display: inline-block;">
                 {{ __sr('how_it_works', 'Ono što nas pokreće', 'Оно што нас покреће') }}
             </h2>
-			<p style="font-size: 20px;">
-				{{ __sr('how_it_works_desc', 'Principi koji vode našu zajednicu ka uspešnoj budućnosti', 'Принципи који воде нашу заједницу ка успешнoj будућности') }}
-			</p>
+            <p style="font-size: 20px;">
+                {{ __sr('how_it_works_desc', 'Principi koji vode našu zajednicu ka uspešnoj budućnosti', 'Принципи који воде нашу заједницу ка успешнoj будућности') }}
+            </p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -64,8 +63,8 @@
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona raketa -->
                 <div class="mb-6 flex justify-center">
-					<img src="{{ asset('storage/images/misija.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
-				</div>
+                    <img src="{{ asset('storage/images/misija.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+                </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">
                     {{ __sr('step1_title', 'Misija', 'Мисија') }}
                 </h3>
@@ -78,13 +77,13 @@
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona sijalica -->
                 <div class="mb-6 flex justify-center">
-					<img src="{{ asset('storage/images/vizija.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
-				</div>
+                    <img src="{{ asset('storage/images/vizija.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+                </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">
                     {{ __sr('step2_title', 'Vizija', 'Визија') }}
                 </h3>
                 <p class="text-gray-600 leading-relaxed">
-                    {{ __sr('step2_desc', 'Republika Srpska kao primer inkluzivnog preduzetništva u regionu. Društvo gdje se različitost ceni i gdje svaki biznis može da napreduje.', 'Република Српска као пример инклузивног предузетништва у региону. Друштво где се различитост цени и где сваки бизнис може да напредује.') }}
+                    {{ __sr('step2_desc', 'Republika Srpska kao primer inkluzivnog preduzetništva u regionu. Društvo gdje se različitost ceni i gdje svaki biznis može da napreduje.', 'Република Srpska као пример инклузивног предузетништва у региону. Друштво где се различитост цени и где сваки бизнис може да напредује.') }}
                 </p>
             </div>
 
@@ -92,8 +91,8 @@
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona kvadrata -->
                 <div class="mb-6 flex justify-center">
-					<img src="{{ asset('storage/images/vrijednosti.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
-				</div>
+                    <img src="{{ asset('storage/images/vrijednosti.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+                </div>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4">
                     {{ __sr('step3_title', 'Vrijednosti', 'Вриједности') }}
                 </h3>
