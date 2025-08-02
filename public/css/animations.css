@@ -1,0 +1,422 @@
+/* ===========================================
+   PRILAGOĐENE ENTRY ANIMACIJE ZA VAŠ DIZAJN
+   =========================================== */
+
+/* Base setup za sve animirane elemente */
+.animate-on-scroll {
+    opacity: 0;
+    will-change: transform, opacity;
+}
+
+.animate-on-scroll.animated {
+    opacity: 1;
+}
+
+/* ===========================================
+   HERO SECTION ANIMACIJE
+   =========================================== */
+
+/* Hero naslov - dramatičan ulazak */
+.hero-title {
+    opacity: 0;
+    transform: translateY(50px) scale(0.95);
+    animation: heroTitleEnter 1.2s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+@keyframes heroTitleEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    70% {
+        opacity: 0.8;
+        transform: translateY(-5px) scale(1.02);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Hero subtitle - blago kašnjenje */
+.hero-subtitle {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeUpSmooth 1s ease-out 0.3s forwards;
+}
+
+/* Hero CTA button - bounce efekat */
+.hero-cta {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    animation: bounceInUp 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.6s forwards;
+}
+
+@keyframes bounceInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(-5px) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ===========================================
+   KARTICE ISPOD HERO SEKCIJE - STAGGERED
+   =========================================== */
+
+/* Kontejner za kartice */
+.cards-container {
+    overflow: hidden;
+}
+
+/* Pojedinačne kartice - postupno pojavljivanje */
+.feature-card {
+    opacity: 0;
+    transform: translateX(-60px) rotateY(20deg);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Staggered animacija - svaka kartica sa kašnjenjem */
+.feature-card:nth-child(1) {
+    animation: slideInFromLeft 0.8s ease-out 0.2s forwards;
+}
+
+.feature-card:nth-child(2) {
+    animation: slideInFromLeft 0.8s ease-out 0.4s forwards;
+}
+
+.feature-card:nth-child(3) {
+    animation: slideInFromLeft 0.8s ease-out 0.6s forwards;
+}
+
+@keyframes slideInFromLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-60px) rotateY(20deg);
+    }
+    70% {
+        opacity: 0.8;
+        transform: translateX(5px) rotateY(-2deg);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0) rotateY(0deg);
+    }
+}
+
+/* Hover efekat za kartice */
+.feature-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* ===========================================
+   KATEGORIJE GRID ANIMACIJE
+   =========================================== */
+
+/* Grid kontejner */
+.categories-grid {
+    opacity: 0;
+    animation: fadeIn 0.8s ease-out 0.3s forwards;
+}
+
+/* Kategorija kartice - wave efekat */
+.category-card {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+}
+
+/* Wave animacija za kategorije */
+.category-card:nth-child(4n+1) { animation: waveUp 0.6s ease-out 0.1s forwards; }
+.category-card:nth-child(4n+2) { animation: waveUp 0.6s ease-out 0.2s forwards; }
+.category-card:nth-child(4n+3) { animation: waveUp 0.6s ease-out 0.3s forwards; }
+.category-card:nth-child(4n+4) { animation: waveUp 0.6s ease-out 0.4s forwards; }
+
+@keyframes waveUp {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(-5px) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ===========================================
+   NAVIGACIJA ANIMACIJE
+   =========================================== */
+
+/* Navigation links - postupno pojavljivanje */
+.nav-link {
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+.nav-link:nth-child(1) { animation: dropDown 0.5s ease-out 0.1s forwards; }
+.nav-link:nth-child(2) { animation: dropDown 0.5s ease-out 0.2s forwards; }
+.nav-link:nth-child(3) { animation: dropDown 0.5s ease-out 0.3s forwards; }
+.nav-link:nth-child(4) { animation: dropDown 0.5s ease-out 0.4s forwards; }
+
+@keyframes dropDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================================
+   SEKCIJE ANIMACIJE
+   =========================================== */
+
+/* Generička sekcija animacija */
+.section-animate {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.section-animate.in-view {
+    animation: sectionFadeUp 0.8s ease-out forwards;
+}
+
+@keyframes sectionFadeUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===========================================
+   FORMULARI I INPUTI
+   =========================================== */
+
+/* Form field animacije */
+.form-field {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.form-field:nth-child(odd) {
+    animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.form-field:nth-child(even) {
+    animation: slideInRight 0.6s ease-out 0.1s forwards;
+}
+
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ===========================================
+   SPECIJALNI EFEKTI
+   =========================================== */
+
+/* Magnetic hover efekat za dugmad */
+.magnetic-btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.magnetic-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+}
+
+.magnetic-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.magnetic-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Glow efekat za važne elemente */
+.glow-element {
+    position: relative;
+}
+
+.glow-element::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(45deg, transparent, rgba(34, 101, 205, 0.3), transparent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: exclude;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    animation: glowRotate 3s linear infinite;
+}
+
+@keyframes glowRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===========================================
+   POMOĆNE ANIMACIJE
+   =========================================== */
+
+/* Osnovne fade animacije */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeUpSmooth {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scale animacije */
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ===========================================
+   RESPONSIVE ANIMACIJE
+   =========================================== */
+
+/* Na manjim ekranima, jednostavnije animacije */
+@media (max-width: 768px) {
+    .feature-card {
+        animation: fadeUpSmooth 0.6s ease-out forwards !important;
+    }
+    
+    .feature-card:nth-child(1) { animation-delay: 0.1s; }
+    .feature-card:nth-child(2) { animation-delay: 0.2s; }
+    .feature-card:nth-child(3) { animation-delay: 0.3s; }
+    
+    .category-card {
+        animation: fadeUpSmooth 0.5s ease-out forwards !important;
+    }
+    
+    .hero-title {
+        animation-duration: 0.8s;
+    }
+}
+
+/* Za korisnikere koji preferiraju smanjene animacije */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ===========================================
+   INTERSECTION OBSERVER KLASE
+   =========================================== */
+
+/* Scroll-triggered animacije */
+.scroll-fade-up {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-fade-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-fade-left.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-fade-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-fade-right.visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-scale-in {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-scale-in.visible {
+    opacity: 1;
+    transform: scale(1);
+}

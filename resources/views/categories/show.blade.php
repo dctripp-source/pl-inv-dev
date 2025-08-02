@@ -128,9 +128,9 @@
                                     $cityName = $business->getDisplayCity(getCurrentScript());
                                     $fullAddress = $business->getDisplayAddress(getCurrentScript());
                                     if ($fullAddress) {
-                                        $fullAddress .= ', ' . $cityName . ', Srbija';
+                                        $fullAddress .= ', ' . $cityName . ', Republika Srpska';
                                     } else {
-                                        $fullAddress = $cityName . ', Srbija';
+                                        $fullAddress = $cityName . ', Republika Srpska';
                                     }
                                     $mapsUrl = 'https://maps.google.com/maps?q=' . urlencode($fullAddress);
                                 @endphp

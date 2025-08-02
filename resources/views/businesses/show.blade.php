@@ -155,7 +155,7 @@
                                 <i class="fas fa-envelope text-primary mt-1 mr-3"></i>
                                 <div>
                                     <div class="font-medium text-gray-900">
-                                        {{ __sr('email', 'Email', 'Емаил') }}
+                                        {{ __sr('email', 'Email', 'Имејл') }}
                                     </div>
                                     <a href="mailto:{{ $business->email }}" class="text-primary hover:underline break-all">
                                         {{ $business->email }}
@@ -170,7 +170,7 @@
                                 <i class="fas fa-globe text-primary mt-1 mr-3"></i>
                                 <div>
                                     <div class="font-medium text-gray-900">
-                                        {{ __sr('website', 'Veb sajt', 'Веб сајт') }}
+                                        {{ __sr('website', 'Web sajt', 'Веб сајт') }}
                                     </div>
                                     <a href="{{ $business->website }}" target="_blank" rel="noopener" class="text-primary hover:underline break-all">
                                         {{ $business->website }}
@@ -220,7 +220,7 @@
                                 <i class="fas fa-clock text-primary mt-1 mr-3"></i>
                                 <div>
                                     <div class="font-medium text-gray-900">
-                                        {{ __sr('working_hours', 'Radno vreme', 'Радно време') }}
+                                        {{ __sr('working_hours', 'Radno vrijeme', 'Радно вријеме') }}
                                     </div>
                                     <div class="text-gray-600">
                                         {!! nl2br(e($business->working_hours)) !!}

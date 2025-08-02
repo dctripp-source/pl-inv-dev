@@ -5,11 +5,11 @@
 @section('content')
 <!-- Hero Section -->
 <!-- Hero Section - bez padding-top da bude uz sam vrh -->
-<section class="relative min-h-screen flex items-center -mt-16">
+<section class="relative min-h-screen flex items-center">
     <!-- DODAJ SLIKU OVDJE kao pozadinu cijele sekcije za DESKTOP -->
 
     <div class="absolute inset-0 hidden md:block">
-        <img src="storage/images/hero-pl4.png" alt="Pozadinska slika" class="w-full h-full object-cover">
+        <img src="storage/images/hro.png" alt="Pozadinska slika" class="w-full h-full object-cover">
     </div>
 
     
@@ -24,7 +24,7 @@
             <!-- Lijeva strana - Tekst content -->
             <div class="text-white">
                 <h1 class="text-4xl md:text-5xl lg:text-5xl font-bold mb-6 leading-tight" style="color: #2265CD; line-height: 55px !important;">
-                    {{ __sr('hero_title', 'Dobrodošli na Fond INVRS Biznis Mrežu', 'Добродошли на Фонд ИНВРС Бизнис Мрежу') }}
+                    {!! __sr('hero_title', 'Dobrodošli na <br> Biznis Mrežu INVRS', 'Добродошли на <br> Бизнис Мрежу ИНВРС') !!}
                 </h1>
                 
                 <p class="text-xl md:text-2xl mb-8 leading-relaxed" style="color: #161616; font-size: 22px;">
@@ -47,12 +47,16 @@
 </section>
 
 <!-- Kako Funkcioniše - 3 Koraka -->
-<section class="py-20 bg-gray-50">
+<section class="py-20 bg-gray-50" style=" height: 90vh; background-image: url('{{ asset('storage/images/bck2.jpg') }}'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4" style="padding: 8px 24px; border-radius: 8px; display: inline-block;">
-                {{ __sr('how_it_works', 'Povežimo se brzo, jednostavno i efikasno.', 'Повежимо се брзо, једноставно и ефикасно.') }}
+                {{ __sr('how_it_works', 'Ono što nas pokreće', 'Оно што нас покреће') }}
             </h2>
+			<p style="font-size: 20px;">
+				{{ __sr('how_it_works_desc', 'Principi koji vode našu zajednicu ka uspešnoj budućnosti', 'Принципи који воде нашу заједницу ка успешнoj будућности') }}
+			</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
@@ -60,13 +64,13 @@
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona raketa -->
                 <div class="mb-6 flex justify-center">
-					<img src="{{ asset('storage/images/register.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+					<img src="{{ asset('storage/images/misija.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
 				</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ __sr('step1_title', 'Prijavite svoj biznis', 'Пријавите свој бизнис') }}
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    {{ __sr('step1_title', 'Misija', 'Мисија') }}
                 </h3>
                 <p class="text-gray-600 leading-relaxed">
-                    {{ __sr('step1_desc', 'Jednostavno ispunite formular sa osnovnim informacijama o vašem biznisu. Proces traje samo nekoliko minuta.', 'Једноставно испуните формулар са основним информацијама о вашем бизнису. Процес траје само неколико минута.') }}
+                    {{ __sr('step1_desc', 'Povezujemo preduzetnike sa invaliditetom sa zajednicom kroz našu digitalnu platformu. Omogućavamo im da pokažu svoj potencijal i ostvare poslovne snove.', 'Повезујемо предузетнике са инвалидитетом са заједницом кроз нашу дигиталну платформу. Омогућавамо им да покажу свој потенцијал и остваре пословне снове.') }}
                 </p>
             </div>
 
@@ -74,13 +78,13 @@
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona sijalica -->
                 <div class="mb-6 flex justify-center">
-					<img src="{{ asset('storage/images/chk.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+					<img src="{{ asset('storage/images/vizija.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
 				</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ __sr('step2_title', 'Brza Verifikacija', 'Брза Верификација') }}
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    {{ __sr('step2_title', 'Vizija', 'Визија') }}
                 </h3>
                 <p class="text-gray-600 leading-relaxed">
-                    {{ __sr('step2_desc', 'Naš tim će pregledati vašu prijavu u roku od 1-2 radna dana i kontaktirati vas sa rezultatom.', 'Наш тим ће прегледати вашу пријаву у року од 1–2 радна дана и контактирати вас са резултатом.') }}
+                    {{ __sr('step2_desc', 'Republika Srpska kao primer inkluzivnog preduzetništva u regionu. Društvo gdje se različitost ceni i gdje svaki biznis može da napreduje.', 'Република Српска као пример инклузивног предузетништва у региону. Друштво где се различитост цени и где сваки бизнис може да напредује.') }}
                 </p>
             </div>
 
@@ -88,13 +92,13 @@
             <div class="bg-white rounded-lg shadow-lg p-8 text-center">
                 <!-- Ikona kvadrata -->
                 <div class="mb-6 flex justify-center">
-					<img src="{{ asset('storage/images/comm.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
+					<img src="{{ asset('storage/images/vrijednosti.png') }}" style="width: 80px; height: 80px;" alt="Registracija" class="object-contain"> 
 				</div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">
-                    {{ __sr('step3_title', 'Povežite se sa zajednicom', 'Повежите се са заједницом') }}
+                <h3 class="text-2xl font-bold text-gray-900 mb-4">
+                    {{ __sr('step3_title', 'Vrijednosti', 'Вриједности') }}
                 </h3>
                 <p class="text-gray-600 leading-relaxed">
-                    {{ __sr('step3_desc', 'Nakon odobrenja, vaš biznis će biti vidljiv svima koji traže usluge. Počnite da gradite veze i širite svoju mrežu.', 'Након одобрења, ваш бизнис ће бити видљив свима који траже услуге. Почните да градите везе и ширите своју мрежу.') }}
+                    {{ __sr('step3_desc', 'Inkluzivnost, transparentnost i solidarnost su temelji našeg rada. Zajedno smo jači i svaki uspeh pojedinca je uspeh cele zajednice.', 'Инклузивност, транспарентност и солидарност су темељи нашег рада. Заједно смо јачи и сваки успех појединца је успех целе заједнице.') }}
                 </p>
             </div>
         </div>

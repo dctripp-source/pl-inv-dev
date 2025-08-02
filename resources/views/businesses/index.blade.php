@@ -130,9 +130,9 @@
                                     $cityName = $business->getDisplayCity(getCurrentScript());
                                     $fullAddress = $business->getDisplayAddress(getCurrentScript());
                                     if ($fullAddress) {
-                                        $fullAddress .= ', ' . $cityName . ', Srbija';
+                                        $fullAddress .= ', ' . $cityName . ', Republika Srpska';
                                     } else {
-                                        $fullAddress = $cityName . ', Srbija';
+                                        $fullAddress = $cityName . ', Republika Srpska';
                                     }
                                     $mapsUrl = 'https://maps.google.com/maps?q=' . urlencode($fullAddress);
                                 @endphp
@@ -169,7 +169,7 @@
                 {{ __sr('no_businesses_found', 'Nema pronađenih biznisa', 'Нема пронађених бизниса') }}
             </h3>
             <p class="text-gray-600 mb-6">
-                {{ __sr('try_different_search', 'Pokušajte sa drugačijim pretragom ili filtrima', 'Покушајте са другачијим претрагом или филтрима') }}
+                {{ __sr('try_different_search', 'Pokušajte sa drugačijom pretragom ili filterima', 'Покушајте са другачијом претрагом или филтерима') }}
             </p>
             <a href="{{ route('business.index') }}" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
                 {{ __sr('show_all', 'Prikaži sve', 'Прикажи све') }}

@@ -10,6 +10,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<!--<link href="{{ asset('css/animations.css') }}" rel="stylesheet"> -->
     
     <!-- Accessibility Helper -->
     <!-- Navbar scroll functionality -->
@@ -37,13 +38,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             // Vrh stranice - transparentan
-            navbar.classList.remove('bg-white', 'shadow-sm', 'border-gray-200');
-            navbar.classList.add('bg-transparent', 'border-transparent');
+            navbar.classList.remove('bg-transparent', 'border-transparent');
+            navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Bijeli tekst
+            // Tamni tekst
             navLinks.forEach(link => {
-                link.classList.remove('text-gray-700', 'hover:text-primary');
-                link.classList.add('text-white', 'hover:text-blue-200');
+                link.classList.remove('text-white', 'hover:text-blue-200');
+                link.classList.add('text-gray-700', 'hover:text-primary');
             });
             
             if (logo) {
@@ -90,13 +91,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             // Vrh stranice - transparentan
-            navbar.classList.remove('bg-white', 'shadow-sm', 'border-gray-200');
-            navbar.classList.add('bg-transparent', 'border-transparent');
+            navbar.classList.remove('bg-transparent', 'border-transparent');
+            navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Bijeli tekst
+            // Tamni tekst za linkove
             navLinks.forEach(link => {
-                link.classList.remove('text-gray-700', 'hover:text-primary');
-                link.classList.add('text-white', 'hover:text-blue-200');
+                link.classList.remove('text-white', 'hover:text-blue-200');
+                link.classList.add('text-gray-700', 'hover:text-primary');
             });
             
             // Logo boja ovisno o stranici
@@ -457,6 +458,161 @@ document.addEventListener('DOMContentLoaded', function() {
                 display: none !important;
             }
         }
+		
+		.card-container {
+            perspective: 1000px;
+        }
+        
+        .card {
+            position: relative;
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Gradient border effect */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, #2265CD, #667eea, #f687b3);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .card:hover::before {
+            opacity: 1;
+        }
+        
+        /* Hover lift effect */
+        .card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 40px rgba(34, 101, 205, 0.2);
+        }
+        
+        /* Icon container with animation */
+        .icon-wrapper {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, #2265CD, #667eea);
+            box-shadow: 0 10px 30px rgba(34, 101, 205, 0.3);
+        }
+        
+        .icon-wrapper img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            transition: all 0.3s ease;
+            filter: brightness(0) saturate(100%) invert(26%) sepia(70%) saturate(1846%) hue-rotate(204deg) brightness(94%) contrast(93%);
+        }
+        
+        .card:hover .icon-wrapper img {
+            filter: brightness(0) saturate(100%) invert(100%);
+            transform: scale(1.1);
+        }
+        
+        /* Number badge */
+        .number-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 35px;
+            height: 35px;
+            background: linear-gradient(135deg, #2265CD, #667eea);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(34, 101, 205, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover .number-badge {
+            transform: scale(1.2) rotate(-10deg);
+            box-shadow: 0 6px 20px rgba(34, 101, 205, 0.4);
+        }
+        
+        /* Title styling */
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            transition: color 0.3s ease;
+        }
+        
+        .card:hover h3 {
+            color: #2265CD;
+        }
+        
+        /* Description styling */
+        .card p {
+            color: #6b7280;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+        
+        .card:hover p {
+            color: #4b5563;
+        }
+        
+        /* Progress indicator */
+        .progress-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 0 0 20px 20px;
+            overflow: hidden;
+        }
+        
+        .progress-line::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #2265CD, #667eea);
+            transition: width 0.3s ease;
+        }
+        
+        .card:hover .progress-line::after {
+            width: 100%;
+        }
+        
+        /* Mobile responsiveness */
+        @media (max-width: 1024px) {
+            .card:hover {
+                transform: translateY(-5px);
+            }
+        }
     </style>
 </head>
 <body>
@@ -637,8 +793,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <!-- NOVO: Accessibility Helper Script -->
     <script src="{{ asset('js/accessibility-helper.js') }}" defer></script>
+	<!--<script src="{{ asset('js/animations.js') }}"></script> -->
 
     <!-- Additional Scripts -->
     @stack('scripts')
+
 </body>
 </html>
