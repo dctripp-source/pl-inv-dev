@@ -3,13 +3,19 @@
 @section('title', __sr('categories', 'Kategorije', 'Категорије'))
 
 @section('content')
-<!-- Hero Section -->
-<section class="bg-primary py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center -mt-20 pt-32">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+<!-- Hero Section Kategorije sa slikom -->
+<section class="bg-primary relative flex items-center mt-20 h-[40vh]">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ asset('storage/images/hero-kategorije.png') }}" alt="Pozadinska slika" class="w-full h-full object-cover">
+    </div>
+    
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-2 relative z-10 w-full">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
             {{ __sr('all_categories', 'Sve Kategorije', 'Све Категорије') }}
         </h1>
-        <p class="text-xl text-blue-100">
+        <p class="text-xl text-blue-100 mb-10">
             {{ __sr('browse_by_category', 'Pregledajte biznise po kategorijama', 'Прегледајте бизнисе по категоријама') }}
         </p>
     </div>

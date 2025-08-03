@@ -6,22 +6,15 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', __sr('title', 'Platforma za Invalide', 'Платформа за Инвалиде'))</title>
     
-    <!-- CSS libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-	<!--<link href="{{ asset('css/animations.css') }}" rel="stylesheet"> -->
-    
-    <!-- Accessibility Helper -->
-    <!-- Navbar scroll functionality -->
 	
 	<style>
-        /* Override postojećih Tailwind klasa za šire kontejnere */
         .max-w-7xl {
-            max-width: 88rem !important; /* 25% manji margine - povećano sa 80rem na 88rem */
+            max-width: 88rem !important;
         }
         
-        /* Smanjeni padding za responzivnost */
         @media (min-width: 640px) {
             .sm\:px-6 {
                 padding-left: 1.25rem !important;
@@ -36,7 +29,6 @@
             }
         }
         
-        /* Alternative - kreiranje potpuno custom kontejnera */
         .container-platform {
             max-width: 88rem;
             margin-left: auto;
@@ -66,63 +58,53 @@
             }
         }
     </style>
+	
 <script>
-
 document.addEventListener('DOMContentLoaded', function() {
     const navbar = document.querySelector('nav');
     const navLinks = document.querySelectorAll('nav a:not(.logo-link)');
-    const logo = document.querySelector('.logo-text'); // Dodajte ovu klasu logo tekstu
+    const logo = document.querySelector('.logo-text'); 
     const ctaButton = document.querySelector('.cta-button');
     const isHomePage = window.location.pathname === '/' || window.location.pathname === '';
     
     function updateNavbar() {
         if (window.scrollY > 50) {
-            // Skrolovan - bijela pozadina
             navbar.classList.remove('bg-transparent', 'border-transparent');
             navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Tamni tekst za linkove
             navLinks.forEach(link => {
                 link.classList.remove('text-white', 'hover:text-blue-200');
                 link.classList.add('text-gray-700', 'hover:text-primary');
             });
             
-            // Logo boja kada se skrola - CRNA
             if (logo) {
                 logo.style.color = '#2265CD';
             }
             
-            // CTA button ostaje bijel tekst
             if (ctaButton) {
                 ctaButton.style.color = '#fff';
             }
         } else {
-            // Vrh stranice - transparentan
             navbar.classList.add('bg-transparent', 'border-transparent');
             navbar.classList.remove('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Bijeli tekst za linkove
             navLinks.forEach(link => {
                 link.classList.add('text-white', 'hover:text-blue-200');
                 link.classList.remove('text-gray-700', 'hover:text-primary');
             });
             
-            // Logo boja na vrhu - PLAVA
             if (logo) {
                 logo.style.color = '#2265CD';
             }
             
-            // CTA button ostaje bijel tekst
             if (ctaButton) {
                 ctaButton.style.color = '#fff';
             }
         }
     }
     
-    // Pozovi funkciju na scroll
     window.addEventListener('scroll', updateNavbar);
     
-    // Pozovi funkciju odmah da postaviš početno stanje
     updateNavbar();
 });
 
@@ -135,56 +117,46 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updateNavbar() {
         if (window.scrollY > 50) {
-            // Skrolovan - bijela pozadina
             navbar.classList.remove('bg-transparent', 'border-transparent');
             navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Tamni tekst za linkove
             navLinks.forEach(link => {
                 link.classList.remove('text-white', 'hover:text-blue-200');
                 link.classList.add('text-gray-700', 'hover:text-primary');
             });
             
-            // Logo boja kada se skrola
             if (logo) {
                 logo.style.color = '#2265CD';
             }
             
-            // CTA button ostaje bijel tekst
             if (ctaButton) {
                 ctaButton.style.color = '#fff';
             }
         } else {
-            // Vrh stranice - transparentan
             navbar.classList.remove('bg-transparent', 'border-transparent');
             navbar.classList.add('bg-white', 'shadow-sm', 'border-gray-200');
             
-            // Tamni tekst za linkove
             navLinks.forEach(link => {
                 link.classList.remove('text-white', 'hover:text-blue-200');
                 link.classList.add('text-gray-700', 'hover:text-primary');
             });
             
-            // Logo boja ovisno o stranici
             if (logo) {
                 if (isHomePage) {
-                    logo.style.color = '#2265CD'; // Plavo na početnoj
+                    logo.style.color = '#2265CD'; 
                 } else {
-                    logo.style.color = '#2265CD'; // Bijelo na ostalim
+                    logo.style.color = '#2265CD'; 
                 }
             }
             
-            // CTA button ostaje bijel tekst
             if (ctaButton) {
                 ctaButton.style.color = '#fff';
             }
         }
     }
     
-    // Pozovi funkciju na scroll
     window.addEventListener('scroll', updateNavbar);
     
-    // Pozovi funkciju odmah da postaviš početno stanje
     updateNavbar();
 });
 </script>
@@ -227,7 +199,6 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
         
-        /* Language Switcher Styles */
         .language-switcher {
             position: relative;
         }
@@ -272,13 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
             background-color: var(--hover-blue);
         }
         
-        /* Search Form Styles */
         .search-form {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
         }
         
-        /* Accessibility Enhancements */
         .skip-link {
             position: absolute;
             top: -40px;
@@ -295,7 +264,6 @@ document.addEventListener('DOMContentLoaded', function() {
             top: 6px;
         }
         
-        /* Focus styles for better accessibility */
         *:focus {
             outline: 2px solid var(--primary-blue);
             outline-offset: 2px;
@@ -310,7 +278,6 @@ document.addEventListener('DOMContentLoaded', function() {
             outline-offset: 2px;
         }
 
-        /* NOVO: Font size scaling - uključuje i naslove */
         body.font-size-80 { font-size: 80% !important; }
         body.font-size-80 h1 { font-size: calc(2.25rem * 0.8) !important; }
         body.font-size-80 h2 { font-size: calc(1.875rem * 0.8) !important; }
@@ -375,14 +342,12 @@ document.addEventListener('DOMContentLoaded', function() {
         body.font-size-150 h5 { font-size: calc(1.125rem * 1.5) !important; }
         body.font-size-150 h6 { font-size: calc(1rem * 1.5) !important; }
 
-        /* Skaliraj navigaciju i logo */
         body.font-size-110 nav .text-xl { font-size: calc(1.375rem * 1.1) !important; }
         body.font-size-120 nav .text-xl { font-size: calc(1.375rem * 1.2) !important; }
         body.font-size-130 nav .text-xl { font-size: calc(1.375rem * 1.3) !important; }
         body.font-size-140 nav .text-xl { font-size: calc(1.375rem * 1.4) !important; }
         body.font-size-150 nav .text-xl { font-size: calc(1.375rem * 1.5) !important; }
 
-        /* Skaliraj linkove u navigaciji (ne accessibility komponente) */
         body.font-size-110 nav a:not(.accessibility-btn):not([class*="accessibility"]),
         body.font-size-110 nav button:not(.accessibility-btn):not([class*="accessibility"]) { 
             font-size: calc(1.125rem * 1.1) !important; 
@@ -408,7 +373,6 @@ document.addEventListener('DOMContentLoaded', function() {
             font-size: calc(1.125rem * 1.5) !important; 
         }
 
-        /* Skaliraj hero naslove specifično */
         body.font-size-110 .text-3xl { font-size: calc(1.875rem * 1.1) !important; }
         body.font-size-110 .text-4xl { font-size: calc(2.25rem * 1.1) !important; }
         body.font-size-110 .text-5xl { font-size: calc(3rem * 1.1) !important; }
@@ -429,7 +393,6 @@ document.addEventListener('DOMContentLoaded', function() {
         body.font-size-150 .text-4xl { font-size: calc(2.25rem * 1.5) !important; }
         body.font-size-150 .text-5xl { font-size: calc(3rem * 1.5) !important; }
 
-        /* VAŽNO: Osiguraj da se accessibility komponente NE skaliraju */
         .accessibility-no-scale,
         .accessibility-no-scale *,
         .accessibility-button,
@@ -445,7 +408,6 @@ document.addEventListener('DOMContentLoaded', function() {
             transform: none !important;
         }
 
-        /* Specifične veličine za accessibility komponente */
         .accessibility-button {
             font-size: 24px !important;
             width: 60px !important;
@@ -465,7 +427,6 @@ document.addEventListener('DOMContentLoaded', function() {
             padding: 8px 16px !important;
         }
 
-        /* Dodatno osiguravanje da se accessibility elementi ne mijenjaju */
         body[class*="font-size"] .accessibility-no-scale,
         body[class*="font-size"] .accessibility-no-scale *,
         body[class*="font-size"] .accessibility-button,
@@ -497,14 +458,12 @@ document.addEventListener('DOMContentLoaded', function() {
             font-size: 14px !important;
         }
         
-        /* High contrast mode support */
         @media (prefers-contrast: high) {
             .bg-primary { background-color: #000080; }
             .text-primary { color: #000080; }
             .border-primary { border-color: #000080; }
         }
         
-        /* Reduced motion support */
         @media (prefers-reduced-motion: reduce) {
             * {
                 animation-duration: 0.01ms !important;
@@ -513,7 +472,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        /* Print styles */
         @media print {
             .accessibility-button,
             .accessibility-sidebar,
@@ -539,7 +497,6 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
         }
         
-        /* Gradient border effect */
         .card::before {
             content: '';
             position: absolute;
@@ -558,13 +515,11 @@ document.addEventListener('DOMContentLoaded', function() {
             opacity: 1;
         }
         
-        /* Hover lift effect */
         .card:hover {
             transform: translateY(-10px) rotateX(5deg);
             box-shadow: 0 20px 40px rgba(34, 101, 205, 0.2);
         }
         
-        /* Icon container with animation */
         .icon-wrapper {
             width: 100px;
             height: 100px;
@@ -597,7 +552,6 @@ document.addEventListener('DOMContentLoaded', function() {
             transform: scale(1.1);
         }
         
-        /* Number badge */
         .number-badge {
             position: absolute;
             top: -10px;
@@ -621,7 +575,6 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 6px 20px rgba(34, 101, 205, 0.4);
         }
         
-        /* Title styling */
         .card h3 {
             font-size: 1.5rem;
             font-weight: 700;
@@ -634,7 +587,6 @@ document.addEventListener('DOMContentLoaded', function() {
             color: #2265CD;
         }
         
-        /* Description styling */
         .card p {
             color: #6b7280;
             line-height: 1.6;
@@ -645,7 +597,6 @@ document.addEventListener('DOMContentLoaded', function() {
             color: #4b5563;
         }
         
-        /* Progress indicator */
         .progress-line {
             position: absolute;
             bottom: 0;
@@ -672,7 +623,6 @@ document.addEventListener('DOMContentLoaded', function() {
             width: 100%;
         }
         
-        /* Mobile responsiveness */
         @media (max-width: 1024px) {
             .card:hover {
                 transform: translateY(-5px);
@@ -693,7 +643,6 @@ document.addEventListener('DOMContentLoaded', function() {
     transition: all 0.8s ease-out;
 }
 
-/* Animirano stanje - vidljivo i na mestu */
 .fade-in-left.animated {
     opacity: 1;
     transform: translateX(0);
@@ -704,14 +653,12 @@ document.addEventListener('DOMContentLoaded', function() {
     transform: translateY(0);
 }
 
-/* Delay klase */
 .delay-100 { transition-delay: 0.1s; }
 .delay-200 { transition-delay: 0.2s; }
 .delay-300 { transition-delay: 0.3s; }
 .delay-400 { transition-delay: 0.4s; }
 .delay-500 { transition-delay: 0.5s; }
 
-/* Responsive - manji pomak na mobilnim */
 @media (max-width: 768px) {
     .fade-in-left {
         transform: translateX(-30px);
@@ -722,55 +669,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 
-/* Hover efekti za animirane elemente */
 .fade-in-left.animated:hover,
 .fade-in-bottom.animated:hover {
     transform: scale(1.02);
 }
 
-/* Smooth scroll */
 html {
     scroll-behavior: smooth;
 }
 </style>
 </head>
 <body>
-    <!-- Skip to main content link for screen readers -->
     <a href="#main-content" class="skip-link">
         {{ __sr('skip_to_content', 'Preskoči na glavni sadržaj', 'Прескочи на главни садржај') }}
     </a>
 
    <div x-data="{ mobileMenuOpen: false }" class="min-h-screen bg-gray-50">
-    <!-- Navigation -->
     <nav class="bg-transparent border-transparent backdrop-blur-sm fixed top-0 w-full z-50 transition-all duration-300" role="navigation" aria-label="{{ __sr('main_navigation', 'Glavna navigacija', 'Главна навигација') }}">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
                 <div class="flex items-center">
     <a href="{{ route('home') }}" class="flex items-center logo-link">
-        <!-- Prvi logo - Fond INVRS -->
         <img src="{{ asset('storage/images/fond-logo.png') }}" 
              style="width: 60px; height: 50px;" 
              alt="Fond INVRS Logo" 
              class="h-8 w-auto mr-3" /> 
 			 
-		<!-- Drugi logo - Ministarstvo RS -->
-        <img src="{{ asset('storage/images/rs-logo.png') }}" 
+		<img src="{{ asset('storage/images/rs-logo.png') }}" 
              style="width: 60px; height: 50px;" 
              alt="Ministarstvo Republike Srpske Logo" 
              class="h-8 w-auto mr-3" />
         
-        <!-- Tekst logotipa -->
         <span class="logo-text text-xl font-bold transition-colors duration-300 mr-4" style="font-size: 1.375rem;">
             {{ __sr('site_name_short', 'Biznis mreža INVRS', 'Бизнис мрежа ИНВРС') }}
         </span>
-        
-        
-        
     </a>
 </div>
                 
-                <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{{ route('home') }}" class="text-white hover:text-blue-200 transition-colors duration-300 {{ request()->routeIs('home') ? 'font-semibold' : '' }}" style="font-size: 1.125rem;">
                         {{ __sr('nav_home', 'Početna', 'Почетна') }}
@@ -782,12 +717,10 @@ html {
                         {{ __sr('nav_categories', 'Kategorije', 'Категорије') }}
                     </a>
                     
-                    <!-- CTA Button -->
                     <a href="{{ route('business.create') }}" class="font-semibold px-6 py-2 rounded-full transition-colors duration-300 hover:bg-blue-700" style="background-color: #2265CD; color: #fff; font-size: 1.125rem;">
                         {{ __sr('nav_add_business', 'Prijavi svoj biznis', 'Пријави свој бизнис') }}
                     </a>
                     
-                    <!-- Language Switcher -->
                     <div class="language-switcher" x-data="{ open: false }">
                         <button @click="open = !open" 
                                 @click.away="open = false"
@@ -825,7 +758,6 @@ html {
                     </div>
                 </div>
                 
-                <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center">
                     <button @click="mobileMenuOpen = !mobileMenuOpen" 
                             class="text-white hover:text-blue-200 transition-colors duration-300 flex items-center justify-center"
@@ -836,7 +768,6 @@ html {
                 </div>
             </div>
             
-            <!-- Mobile menu -->
             <div x-show="mobileMenuOpen" 
                  x-cloak 
                  x-transition:enter="transition ease-out duration-200"
@@ -857,7 +788,6 @@ html {
                         {{ __sr('nav_categories', 'Kategorije', 'Категорије') }}
                     </a>
                     
-                    <!-- Mobile Language Switcher -->
                     <div class="border-t border-gray-200 pt-2 mt-2">
                         <div class="px-3 py-2 text-sm" style="color: #252525;">{{ __sr('language', 'Jezik', 'Језик') }}:</div>
                         <a href="{{ request()->fullUrlWithQuery(['lang' => 'lat']) }}" 
@@ -874,16 +804,13 @@ html {
         </div>
     </nav>
 
-    <!-- Main Content - uklonjen padding-top jer hero ide uz vrh -->
     <main id="main-content" role="main">
         @yield('content')
     </main>
 
-        <!-- Footer -->
         <footer class="bg-footer text-white mt-16" role="contentinfo">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <!-- About -->
                     <div class="md:col-span-2">
                         <div class="flex items-center mb-4">
     <img src="{{ asset('storage/images/fond-logo.png') }}" style="width: 50px; height: 40px;" alt="Logo" class="object-contain mr-3"> 
@@ -894,9 +821,8 @@ html {
                         </p>
                     </div>
                     
-                    <!-- Quick Links -->
                     <div>
-                        <h3 class="text-lg font-semibold mb-4">{{ __sr('quick_links', 'Brze veze', 'Брзе везе') }}</h3>
+                        <h3 class="text-lg font-semibold mb-4">{{ __sr('quick_links', 'Korisni linkovi', 'Корисни линкови') }}</h3>
                         <ul class="space-y-2">
                             <li><a href="{{ route('home') }}" class="text-blue-100 hover:text-white transition-colors">{{ __sr('nav_home', 'Početna', 'Почетна') }}</a></li>
                             <li><a href="{{ route('business.index') }}" class="text-blue-100 hover:text-white transition-colors">{{ __sr('nav_businesses', 'Biznisi', 'Бизниси') }}</a></li>
@@ -905,7 +831,6 @@ html {
                         </ul>
                     </div>
                     
-                    <!-- Contact -->
                     <div>
                         <h3 class="text-lg font-semibold mb-4">{{ __sr('contact', 'Kontakt', 'Контакт') }}</h3>
                         <ul class="space-y-2 text-blue-100">
@@ -918,251 +843,222 @@ html {
                 
                 <div class="border-t border-blue-300 mt-8 pt-8 text-center text-blue-100">
                     <p>&copy; {{ date('Y') }} {{ __sr('site_name', 'Fond INVRS Biznis Mreža', 'Фонд ИНВРС Бизнис Мрежа') }}. {{ __sr('all_rights_reserved', 'Sva prava zadržana.', 'Сва права задржана.') }}</p>
-					<span>Kreirao </span><a href="https://qodevision.com" target="_blank" rel="noopener noreferrer" style="color: #FFF;">QODE VISION</a>
+					<span> {{ __sr('madeby', 'Kreirao', 'Креирао') }} </span><a href="https://qodevision.com" target="_blank" rel="noopener noreferrer" style="color: #FFF;">QODE VISION</a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- NOVO: Accessibility Helper Script -->
     <script src="{{ asset('js/accessibility-helper.js') }}" defer></script>
-	<!--<script src="{{ asset('js/animations.js') }}"></script> -->
 
-    <!-- Additional Scripts -->
     @stack('scripts')
-	
 	
 <script>
 class BusinessImageUploader {
     constructor() {
-        this.maxFiles = 10; // Maksimalno slika
-        this.maxFileSize = 10 * 1024 * 1024; // 10MB
-        this.allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
         this.uploadedImages = [];
-        this.isUploading = false;
-        
         this.init();
+        if (this.isOnBusinessCreatePage()) {
+            this.loadExistingImages();
+        }
+    }
+
+    isOnBusinessCreatePage() {
+        return window.location.pathname.includes('/prijavi') && 
+               document.getElementById('business-form') !== null;
     }
 
     init() {
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.setupEventListeners());
-        } else {
-            this.setupEventListeners();
-        }
-    }
-
-    setupEventListeners() {
-        const fileInput = document.getElementById('image-input');
         const uploadZone = document.getElementById('upload-zone');
-        const clearAllBtn = document.getElementById('clear-all-images');
-        const form = document.getElementById('business-form');
+        const fileInput = document.getElementById('image-upload');
+        const businessForm = document.getElementById('business-form');
 
-        if (!fileInput || !uploadZone) return;
-
-        // File input change
-        fileInput.addEventListener('change', (e) => this.handleFileSelection(e));
-
-        // Drag & Drop
-        this.setupDragAndDrop(uploadZone);
-
-        // Clear all images
-        if (clearAllBtn) {
-            clearAllBtn.addEventListener('click', () => this.clearAllImages());
-        }
-
-        // Form submit
-        if (form) {
-            form.addEventListener('submit', (e) => this.handleFormSubmit(e));
-        }
-
-        // Load existing images from session
-        this.loadExistingImages();
-    }
-
-    setupDragAndDrop(uploadZone) {
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, this.preventDefaults, false);
-        });
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => {
+        if (uploadZone && fileInput) {
+            uploadZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
                 uploadZone.classList.add('dragover');
             });
-        });
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            uploadZone.addEventListener(eventName, () => {
+            uploadZone.addEventListener('dragleave', () => {
                 uploadZone.classList.remove('dragover');
             });
-        });
 
-        uploadZone.addEventListener('drop', (e) => {
-            const files = Array.from(e.dataTransfer.files);
-            this.processFiles(files);
-        });
+            uploadZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadZone.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                this.handleFiles(files);
+            });
 
-        // Click to upload
-        uploadZone.addEventListener('click', (e) => {
-            if (e.target.closest('button') || e.target.closest('input')) return;
-            document.getElementById('image-input').click();
-        });
+            uploadZone.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                this.handleFiles(e.target.files);
+            });
+        }
+
+        if (businessForm) {
+            businessForm.addEventListener('submit', (e) => {
+                this.handleFormSubmit(e);
+            });
+        }
     }
 
-    preventDefaults(e) {
-        e.preventDefault();
-        e.stopPropagation();
-    }
-
-    handleFileSelection(e) {
-        const files = Array.from(e.target.files);
-        this.processFiles(files);
-        e.target.value = ''; // Reset input
-    }
-
-    processFiles(files) {
-        if (this.isUploading) {
-            this.showError('Upload je već u toku. Molimo sačekajte.');
+    async loadExistingImages() {
+        if (!this.isOnBusinessCreatePage()) {
             return;
         }
 
-        // Provjeri limit
-        if (this.uploadedImages.length + files.length > this.maxFiles) {
-            this.showError(`Možete uploadovati maksimalno ${this.maxFiles} slika. Trenutno imate ${this.uploadedImages.length}.`);
-            return;
+        try {
+            const response = await fetch('/biznisi/uploadovane-slike', {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || ''
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.log('No existing images found in session - starting fresh');
+                    return;
+                }
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            if (data.success && data.images && Array.isArray(data.images)) {
+                this.uploadedImages = data.images;
+                this.displayImages();
+                this.updateImageCount();
+                console.log(`Loaded ${data.images.length} existing images from session`);
+            }
+        } catch (error) {
+            console.error('Error loading existing images:', error);
+            this.uploadedImages = [];
         }
+    }
 
-        // Validiraj fajlove
-        const validFiles = files.filter(file => this.validateFile(file));
-        
-        if (validFiles.length === 0) return;
+    async handleFiles(files) {
+        this.clearMessages();
 
-        // Upload fajlove jedan po jedan
-        this.uploadFiles(validFiles);
+        for (let file of files) {
+            if (!this.validateFile(file)) continue;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/biznisi/upload-sliku', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.uploadedImages.push(data.image);
+                    this.displayImages();
+                    this.updateImageCount();
+                    this.showSuccess(`Slika "${file.name}" je uspešno uploadovana.`);
+                } else {
+                    this.showError(data.message || 'Greška pri upload-u slike.');
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+                this.showError(`Greška pri upload-u slike "${file.name}".`);
+            }
+        }
     }
 
     validateFile(file) {
-        // Tip fajla
-        if (!this.allowedTypes.includes(file.type)) {
-            this.showError(`${file.name}: Nepodržan format. Koristite JPG, PNG ili WebP.`);
+        const maxSize = 10 * 1024 * 1024;
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+
+        if (!allowedTypes.includes(file.type)) {
+            this.showError(`Fajl "${file.name}" nije podržan tip slike.`);
             return false;
         }
 
-        // Veličina
-        if (file.size > this.maxFileSize) {
-            this.showError(`${file.name}: Fajl je prevelik. Maksimalno 10MB.`);
+        if (file.size > maxSize) {
+            this.showError(`Fajl "${file.name}" je prevelik. Maksimalna veličina je 10MB.`);
+            return false;
+        }
+
+        if (this.uploadedImages.length >= 10) {
+            this.showError('Možete uploadovati maksimalno 10 slika.');
             return false;
         }
 
         return true;
     }
 
-    async uploadFiles(files) {
-        this.isUploading = true;
-        this.showLoading(true);
-        
-        for (let file of files) {
-            try {
-                await this.uploadSingleFile(file);
-            } catch (error) {
-                console.error('Upload error:', error);
-                this.showError(`Greška pri upload-u ${file.name}: ${error.message}`);
-            }
-        }
-        
-        this.isUploading = false;
-        this.showLoading(false);
-    }
-
-    uploadSingleFile(file) {
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            formData.append('image', file);
-            formData.append('_token', document.querySelector('meta[name="csrf-token"]').getAttribute('content'));
-
-            // VAŽNO: Koristi /biznisi/ URL umesto /business/
-            fetch('/biznisi/upload-sliku', {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    this.uploadedImages.push(data.image);
-                    this.addImageToPreview(data.image);
-                    this.updateImageCount();
-                    resolve(data);
-                } else {
-                    reject(new Error(data.message || 'Upload failed'));
-                }
-            })
-            .catch(error => {
-                reject(error);
-            });
-        });
-    }
-
-    addImageToPreview(imageData) {
+    displayImages() {
         const container = document.getElementById('uploaded-images-container');
         const grid = document.getElementById('uploaded-images-grid');
-        
+
         if (!container || !grid) return;
 
-        // Kreiraj image card
-        const imageCard = this.createImageCard(imageData);
-        grid.appendChild(imageCard);
-
-        // Pokaži container
-        container.classList.remove('hidden');
-    }
-
-    createImageCard(imageData) {
-        const div = document.createElement('div');
-        div.className = 'image-preview-card fade-in-left';
-        div.dataset.imagePath = imageData.path;
-
-        div.innerHTML = `
-            <img src="${imageData.url}" alt="${imageData.original_name}" loading="lazy">
-            
-            <div class="image-actions">
-                <button type="button" 
-                        class="delete-image-btn" 
-                        onclick="window.imageUploader.deleteImage('${imageData.path}')"
-                        title="Obriši sliku">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <div class="p-3">
-                <p class="text-xs text-gray-600 truncate mb-1" title="${imageData.original_name}">
-                    ${imageData.original_name}
-                </p>
-                <div class="flex justify-between text-xs text-gray-500">
-                    <span>${imageData.info.width} × ${imageData.info.height}</span>
-                    <span>${imageData.info.size_formatted}</span>
-                </div>
-                ${this.uploadedImages.length === 1 ? '<div class="text-xs text-blue-600 font-medium mt-1">Glavna slika</div>' : ''}
-            </div>
-        `;
-
-        // Dodaj fade-in animaciju
-        setTimeout(() => {
-            div.classList.add('animated');
-        }, 50);
-
-        return div;
-    }
-
-    async deleteImage(imagePath) {
-        if (!confirm('Da li ste sigurni da želite da obrišete ovu sliku?')) {
+        if (this.uploadedImages.length === 0) {
+            container.classList.add('hidden');
             return;
         }
 
+        container.classList.remove('hidden');
+        grid.innerHTML = '';
+
+        this.uploadedImages.forEach((image, index) => {
+            const div = document.createElement('div');
+            div.className = 'image-preview-card';
+            div.innerHTML = `
+                <img src="${image.url}" alt="${image.name}">
+                <div class="image-actions">
+                    <button type="button" 
+                            class="delete-image-btn"
+                            onclick="deleteImage('${image.path}')"
+                            title="Obriši sliku">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="p-2">
+                    <p class="text-xs text-gray-600 truncate">${image.name}</p>
+                    <p class="text-xs text-gray-500">${this.formatFileSize(image.size)}</p>
+                    ${index === 0 ? '<p class="text-xs text-blue-600"><i class="fas fa-star mr-1"></i>Glavna slika</p>' : ''}
+                </div>
+            `;
+            grid.appendChild(div);
+        });
+    }
+
+    formatFileSize(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
+
+    updateImageCount() {
+        const countElements = document.querySelectorAll('.image-count');
+        countElements.forEach(el => {
+            el.textContent = this.uploadedImages.length;
+        });
+
+        const remainingElements = document.querySelectorAll('.remaining-count');
+        remainingElements.forEach(el => {
+            el.textContent = 10 - this.uploadedImages.length;
+        });
+    }
+
+    async deleteImage(imagePath) {
         try {
-            // VAŽNO: Koristi /biznisi/ URL umesto /business/
             const response = await fetch('/biznisi/obrisi-sliku', {
                 method: 'DELETE',
                 headers: {
@@ -1170,27 +1066,15 @@ class BusinessImageUploader {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     'X-Requested-With': 'XMLHttpRequest'
                 },
-                body: JSON.stringify({ image_path: imagePath })
+                body: JSON.stringify({path: imagePath})
             });
 
             const data = await response.json();
 
             if (data.success) {
-                // Ukloni iz array-a
                 this.uploadedImages = this.uploadedImages.filter(img => img.path !== imagePath);
-                
-                // Ukloni iz DOM-a
-                const imageCard = document.querySelector(`[data-image-path="${imagePath}"]`);
-                if (imageCard) {
-                    imageCard.style.opacity = '0';
-                    imageCard.style.transform = 'scale(0.8)';
-                    setTimeout(() => {
-                        imageCard.remove();
-                        this.updateImageCount();
-                        this.updateMainImageLabels();
-                    }, 200);
-                }
-
+                this.displayImages();
+                this.updateImageCount();
                 this.showSuccess('Slika je uspešno obrisana.');
             } else {
                 this.showError(data.message || 'Greška pri brisanju slike.');
@@ -1209,7 +1093,6 @@ class BusinessImageUploader {
         }
 
         try {
-            // VAŽNO: Koristi /biznisi/ URL umesto /business/
             const response = await fetch('/biznisi/obrisi-sve-slike', {
                 method: 'DELETE',
                 headers: {
@@ -1235,93 +1118,17 @@ class BusinessImageUploader {
         }
     }
 
-    async loadExistingImages() {
-        try {
-            // VAŽNO: Koristi /biznisi/ URL umesto /business/
-            const response = await fetch('/biznisi/uploadovane-slike', {
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }
-            });
-
-            const data = await response.json();
-
-            if (data.success && data.images.length > 0) {
-                this.uploadedImages = data.images;
-                
-                data.images.forEach(imageData => {
-                    this.addImageToPreview(imageData);
-                });
-                
-                this.updateImageCount();
-            }
-        } catch (error) {
-            console.error('Load existing images error:', error);
-        }
-    }
-
-    updateImageCount() {
-        const countEl = document.getElementById('images-count');
-        if (countEl) {
-            countEl.textContent = this.uploadedImages.length;
-        }
-
-        // Sakrij container ako nema slika
-        if (this.uploadedImages.length === 0) {
-            const container = document.getElementById('uploaded-images-container');
-            if (container) {
-                container.classList.add('hidden');
-            }
-        }
-    }
-
-    updateMainImageLabels() {
-        const cards = document.querySelectorAll('.image-preview-card');
-        cards.forEach((card, index) => {
-            const mainLabel = card.querySelector('.text-blue-600');
-            if (mainLabel) {
-                mainLabel.remove();
-            }
-
-            if (index === 0) {
-                const infoDiv = card.querySelector('.p-3');
-                if (infoDiv) {
-                    const label = document.createElement('div');
-                    label.className = 'text-xs text-blue-600 font-medium mt-1';
-                    label.textContent = 'Glavna slika';
-                    infoDiv.appendChild(label);
-                }
-            }
-        });
-    }
-
-    showLoading(show) {
-        const loadingEl = document.getElementById('upload-loading');
-        if (loadingEl) {
-            if (show) {
-                loadingEl.classList.remove('hidden');
-            } else {
-                loadingEl.classList.add('hidden');
-            }
-        }
-    }
-
     showError(message) {
-        this.clearMessages();
-        
-        const errorContainer = document.getElementById('image-errors');
-        if (errorContainer) {
-            errorContainer.innerHTML = `
-                <div class="image-error fade-in-left">
-                    <div class="flex items-center">
-                        <i class="fas fa-exclamation-triangle mr-2"></i>
-                        <span>${message}</span>
-                    </div>
+        const container = document.getElementById('image-errors');
+        if (container) {
+            container.innerHTML = `
+                <div class="image-error">
+                    <i class="fas fa-exclamation-circle mr-2"></i>
+                    ${message}
                 </div>
             `;
-            errorContainer.classList.remove('hidden');
-
-            // Auto hide nakon 5 sekundi
+            container.classList.remove('hidden');
+            
             setTimeout(() => {
                 this.clearMessages();
             }, 5000);
@@ -1329,21 +1136,16 @@ class BusinessImageUploader {
     }
 
     showSuccess(message) {
-        this.clearMessages();
-        
-        const errorContainer = document.getElementById('image-errors');
-        if (errorContainer) {
-            errorContainer.innerHTML = `
-                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg fade-in-left">
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle mr-2"></i>
-                        <span>${message}</span>
-                    </div>
+        const container = document.getElementById('image-errors');
+        if (container) {
+            container.innerHTML = `
+                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    ${message}
                 </div>
             `;
-            errorContainer.classList.remove('hidden');
-
-            // Auto hide nakon 3 sekundi
+            container.classList.remove('hidden');
+            
             setTimeout(() => {
                 this.clearMessages();
             }, 3000);
@@ -1368,17 +1170,11 @@ class BusinessImageUploader {
             submitLoading.classList.remove('hidden');
             submitBtn.disabled = true;
         }
-
-        // Form će se submit-ovati normalno
-        // Slike su već uploadovane i čuvaju se u session-u
     }
 }
 
-// Inicijalizuj uploader samo na create stranici
 document.addEventListener('DOMContentLoaded', function() {
-    // Provjeri da li smo na create stranici
     if (document.getElementById('business-form')) {
-        // Kreiraj CSRF meta tag ako ne postoji
         if (!document.querySelector('meta[name="csrf-token"]')) {
             const meta = document.createElement('meta');
             meta.name = 'csrf-token';
@@ -1386,12 +1182,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.head.appendChild(meta);
         }
 
-        // Kreiraj global instancu
         window.imageUploader = new BusinessImageUploader();
     }
 });
 
-// Helper funkcije za global pristup
 window.deleteImage = function(imagePath) {
     if (window.imageUploader) {
         window.imageUploader.deleteImage(imagePath);
@@ -1402,6 +1196,185 @@ window.clearAllImages = function() {
     if (window.imageUploader) {
         window.imageUploader.clearAllImages();
     }
+};
+</script>
+
+<button id="back-to-top" 
+        class="back-to-top-btn"
+        title="{{ __sr('back_to_top', 'Vrati se na vrh', 'Врати се на врх') }}"
+        aria-label="{{ __sr('back_to_top', 'Vrati se na vrh', 'Врати се на врх') }}">
+    <i class="fas fa-chevron-up"></i>
+</button>
+
+<style>
+.back-to-top-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: #2265CD;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(34, 101, 205, 0.3);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.8);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.back-to-top-btn:hover {
+    background: linear-gradient(135deg, #1a52b8, #2265CD);
+    box-shadow: 0 6px 20px rgba(34, 101, 205, 0.4);
+    transform: translateY(-2px) scale(1.05);
+}
+
+.back-to-top-btn:active {
+    transform: translateY(0) scale(0.95);
+}
+
+.back-to-top-btn.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+	background: #2265CD !important;
+}
+
+.back-to-top-btn i {
+    transition: transform 0.2s ease;
+}
+
+.back-to-top-btn:hover i {
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .back-to-top-btn {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 3rem;
+        height: 3rem;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .back-to-top-btn {
+        bottom: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .back-to-top-btn {
+        background: linear-gradient(135deg, #374151, #1f2937);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .back-to-top-btn:hover {
+        background: linear-gradient(135deg, #4b5563, #374151);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+}
+
+.back-to-top-btn:focus {
+    outline: 2px solid #2265CD;
+    outline-offset: 2px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopBtn = document.getElementById('back-to-top');
+    
+    if (!backToTopBtn) return;
+    
+    const scrollThreshold = 300;
+    
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+    
+    function toggleBackToTop() {
+        const scrolled = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrolled > scrollThreshold) {
+            backToTopBtn.classList.add('show');
+        } else {
+            backToTopBtn.classList.remove('show');
+        }
+    }
+    
+    window.addEventListener('scroll', debounce(toggleBackToTop, 10));
+    
+    backToTopBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        backToTopBtn.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            backToTopBtn.style.transform = '';
+        }, 150);
+    });
+    
+    backToTopBtn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            backToTopBtn.click();
+        }
+    });
+    
+    toggleBackToTop();
+    
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+        }, {
+            rootMargin: '0px 0px -100px 0px'
+        });
+        
+        const header = document.querySelector('header, nav, .hero');
+        if (header) {
+            observer.observe(header);
+        }
+    }
+});
+
+window.scrollToTop = function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 };
 </script>
 

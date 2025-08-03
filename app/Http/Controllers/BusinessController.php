@@ -34,11 +34,22 @@ class BusinessController extends Controller
                                      $q->where('slug', request('category'));
                                  });
                              })
+                             ->when(request('city'), function($query) {
+                                 $query->where('city', 'like', '%' . request('city') . '%');
+                             })
                              ->approved()
                              ->latest()
                              ->paginate(12);
 
-        return view('businesses.index', compact('businesses', 'categories'));
+
+        $cities = Business::approved()
+                         ->distinct()
+                         ->orderBy('city')
+                         ->pluck('city')
+                         ->filter()
+                         ->sort();
+
+        return view('businesses.index', compact('businesses', 'categories', 'cities'));
     }
 
     public function show($slug)
@@ -66,98 +77,142 @@ class BusinessController extends Controller
         return view('businesses.create', compact('categories'));
     }
 
+
     public function store(BusinessStoreRequest $request)
     {
+
+        \Log::info('=== BUSINESS STORE ATTEMPT ===');
+        \Log::info('Request method: ' . $request->method());
+        \Log::info('Request URL: ' . $request->url());
+        \Log::info('Request all data: ', $request->all());
+        \Log::info('Request validated data: ', $request->validated());
+        \Log::info('Session uploaded images: ', session('uploaded_images', []));
+        \Log::info('Session ID: ' . session()->getId());
+        \Log::info('CSRF Token: ' . $request->header('X-CSRF-TOKEN'));
+        
         try {
+
+            $uploadedImages = session('uploaded_images', []);
+            
+            \Log::info('Uploaded images count: ' . count($uploadedImages));
+            
+            if (empty($uploadedImages)) {
+                \Log::error('No images in session');
+                return back()
+                    ->withInput()
+                    ->withErrors(['images' => 'Morate uploadovati najmanje jednu sliku.']);
+            }
+
+            \Log::info('Creating business with data: ', $request->validated());
             $business = Business::create($request->validated());
             
+            \Log::info('Business created successfully', [
+                'business_id' => $business->id,
+                'business_name' => $business->business_name
+            ]);
+
             if ($request->has('categories')) {
-                $business->categories()->attach($request->categories);
+                $categories = $request->categories;
+                \Log::info('Attaching categories: ', $categories);
+                $business->categories()->attach($categories);
+                \Log::info('Categories attached successfully');
             }
             
-            // Upload slika iz session-a (ako postoje)
-            if (session()->has('uploaded_images')) {
-                $this->attachUploadedImages($business, session('uploaded_images'));
-                session()->forget('uploaded_images');
-            }
+            \Log::info('Attaching images: ' . count($uploadedImages));
+            $this->attachUploadedImages($business, $uploadedImages);
+            session()->forget('uploaded_images');
+            
+            \Log::info('Images attached successfully');
+            \Log::info('=== BUSINESS STORE SUCCESS ===');
             
             return redirect()->route('business.success')
                             ->with('success', 'Vaš biznis je uspešno prijavljen i čeka odobrenje administratora.');
                             
-        } catch (Exception $e) {
-            \Log::error('Business creation failed: ' . $e->getMessage());
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            \Log::error('=== VALIDATION EXCEPTION ===');
+            \Log::error('Validation errors: ', $e->errors());
             
             return back()
                 ->withInput()
-                ->withErrors(['general' => 'Došlo je do greške prilikom čuvanja biznisa.']);
+                ->withErrors($e->errors());
+                
+        } catch (\Exception $e) {
+            \Log::error('=== GENERAL EXCEPTION ===');
+            \Log::error('Exception message: ' . $e->getMessage());
+            \Log::error('Exception trace: ' . $e->getTraceAsString());
+            
+            return back()
+                ->withInput()
+                ->withErrors(['general' => 'Došlo je do greške: ' . $e->getMessage()]);
         }
     }
 
-    /**
-     * AJAX upload slika
-     */
     public function uploadImage(Request $request): JsonResponse
     {
         try {
             $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240'
+                'file' => 'required|image|mimes:jpeg,png,jpg,webp|max:10240'
             ]);
 
-            $uploadedPath = $this->imageUploadService->uploadBusinessImage($request->file('image'));
+
+            $imagePath = $this->imageUploadService->uploadBusinessImage($request->file('file'));
             
-            // Sačuvaj u session za kasnije korišćenje
+
+            $imageUrl = asset('storage/' . $imagePath);
+            
+
             $uploadedImages = session('uploaded_images', []);
-            $imageData = [
-                'path' => $uploadedPath,
-                'original_name' => $request->file('image')->getClientOriginalName(),
-                'url' => $this->imageUploadService->getImageUrl($uploadedPath),
-                'info' => $this->imageUploadService->getImageInfo($uploadedPath)
+            $uploadedImages[] = [
+                'path' => $imagePath,
+                'url' => $imageUrl,
+                'name' => $request->file('file')->getClientOriginalName(),
+                'size' => $request->file('file')->getSize()
             ];
-            
-            $uploadedImages[] = $imageData;
             session(['uploaded_images' => $uploadedImages]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Slika je uspešno uploadovana.',
-                'image' => $imageData,
+                'image' => [
+                    'path' => $imagePath,
+                    'url' => $imageUrl,
+                    'name' => $request->file('file')->getClientOriginalName(),
+                    'size' => $request->file('file')->getSize()
+                ],
                 'total_images' => count($uploadedImages)
             ]);
 
         } catch (Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Greška pri upload-u slike: ' . $e->getMessage()
             ], 422);
         }
     }
 
-    /**
-     * AJAX brisanje slike
-     */
+
     public function deleteImage(Request $request): JsonResponse
     {
         try {
-            $request->validate([
-                'image_path' => 'required|string'
-            ]);
+            $imagePath = $request->input('path');
+            
+            if (!$imagePath) {
+                throw new Exception('Putanja slike nije prosleđena');
+            }
 
-            $imagePath = $request->image_path;
             $uploadedImages = session('uploaded_images', []);
+            
 
-            // Pronađi i ukloni sliku iz session-a
-            $uploadedImages = array_filter($uploadedImages, function($image) use ($imagePath) {
-                if ($image['path'] === $imagePath) {
-                    // Obriši fizički fajl
-                    $this->imageUploadService->deleteImage($imagePath);
-                    return false;
-                }
-                return true;
+            $uploadedImages = array_filter($uploadedImages, function($img) use ($imagePath) {
+                return $img['path'] !== $imagePath;
             });
+            
 
-            // Re-index array
             $uploadedImages = array_values($uploadedImages);
             session(['uploaded_images' => $uploadedImages]);
+
+
+            $this->imageUploadService->deleteImage($imagePath);
 
             return response()->json([
                 'success' => true,
@@ -173,9 +228,7 @@ class BusinessController extends Controller
         }
     }
 
-    /**
-     * Dobij uploadovane slike iz session-a
-     */
+
     public function getUploadedImages(): JsonResponse
     {
         $uploadedImages = session('uploaded_images', []);
@@ -187,14 +240,11 @@ class BusinessController extends Controller
         ]);
     }
 
-    /**
-     * Očisti sve uploadovane slike iz session-a
-     */
+
     public function clearUploadedImages(): JsonResponse
     {
         $uploadedImages = session('uploaded_images', []);
-        
-        // Obriši sve fizičke fajlove
+
         foreach ($uploadedImages as $image) {
             $this->imageUploadService->deleteImage($image['path']);
         }
@@ -207,9 +257,6 @@ class BusinessController extends Controller
         ]);
     }
 
-    /**
-     * Dodeli uploadovane slike biznis-u
-     */
     protected function attachUploadedImages($business, $uploadedImages)
     {
         foreach ($uploadedImages as $index => $imageData) {

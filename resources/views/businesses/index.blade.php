@@ -3,13 +3,19 @@
 @section('title', __sr('businesses', 'Biznisi', 'Бизниси'))
 
 @section('content')
-<!-- Hero Section -->
-<section class="bg-primary py-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center -mt-20 pt-32">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+<!-- Hero Section Biznisi -->
+<section class="bg-primary relative flex items-center mt-20 h-[40vh]">
+    <!-- Background Image -->
+    <div class="absolute inset-0 z-0">
+        <img src="{{ asset('storage/images/hero-kategorije.png') }}" alt="Pozadinska slika" class="w-full h-full object-cover">
+    </div>
+    
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-2 relative z-10 w-full">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
             {{ __sr('all_businesses', 'Svi Biznisi', 'Сви Бизниси') }}
         </h1>
-        <p class="text-xl text-blue-100 mb-8">
+        <p class="text-xl text-blue-100 mb-10">
             {{ __sr('discover_businesses', 'Otkrijte biznise u vašoj zajednici', 'Откријте бизнисе у вашој заједници') }}
         </p>
         

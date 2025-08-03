@@ -27,17 +27,11 @@ class BusinessImage extends Model
         'full_url'
     ];
 
-    /**
-     * Relacija sa Business modelom
-     */
     public function business()
     {
         return $this->belongsTo(Business::class);
     }
 
-    /**
-     * URL slike
-     */
     public function getUrlAttribute()
     {
         if (!$this->image_path) {
@@ -52,25 +46,16 @@ class BusinessImage extends Model
         return Storage::disk('public')->url($this->image_path);
     }
 
-    /**
-     * Full URL slike (za backward compatibility)
-     */
     public function getFullUrlAttribute()
     {
         return $this->url;
     }
 
-    /**
-     * Placeholder slika
-     */
     protected function getPlaceholderUrl()
     {
         return asset('images/placeholder-business.jpg');
     }
 
-    /**
-     * Dobij informacije o slici
-     */
     public function getImageInfo()
     {
         if (!$this->image_path || !Storage::disk('public')->exists($this->image_path)) {
@@ -134,17 +119,15 @@ class BusinessImage extends Model
         return $query->where('business_id', $businessId);
     }
 
-    /**
-     * Postavi kao glavnu sliku
-     */
+
     public function setAsPrimary()
     {
-        // Ukloni primary sa ostalih slika istog biznisa
+
         static::where('business_id', $this->business_id)
               ->where('id', '!=', $this->id)
               ->update(['is_primary' => false]);
 
-        // Postavi ovu kao glavnu
+
         $this->update(['is_primary' => true]);
 
         return $this;
@@ -157,28 +140,26 @@ class BusinessImage extends Model
     {
         parent::boot();
 
-        // Kada se kreira nova slika
+
         static::creating(function ($image) {
-            // Ako nema sort_order, stavi na kraj
+
             if (is_null($image->sort_order)) {
                 $maxOrder = static::forBusiness($image->business_id)->max('sort_order') ?? -1;
                 $image->sort_order = $maxOrder + 1;
             }
 
-            // Ako je prva slika za biznis, automatski je glavna
             if (!static::forBusiness($image->business_id)->exists()) {
                 $image->is_primary = true;
             }
         });
 
-        // Kada se briše slika
+
         static::deleting(function ($image) {
-            // Obriši fizički fajl
+
             if ($image->image_path && Storage::disk('public')->exists($image->image_path)) {
                 Storage::disk('public')->delete($image->image_path);
             }
 
-            // Ako je bila glavna slika, postavi drugu kao glavnu
             if ($image->is_primary) {
                 $nextImage = static::forBusiness($image->business_id)
                                    ->where('id', '!=', $image->id)
@@ -191,10 +172,8 @@ class BusinessImage extends Model
             }
         });
 
-        // Kada se postavlja kao glavna slika
         static::saving(function ($image) {
             if ($image->is_primary && $image->isDirty('is_primary')) {
-                // Ukloni primary sa ostalih slika
                 static::where('business_id', $image->business_id)
                       ->where('id', '!=', $image->id)
                       ->update(['is_primary' => false]);

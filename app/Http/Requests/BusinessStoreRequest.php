@@ -26,8 +26,7 @@ class BusinessStoreRequest extends FormRequest
             'website' => 'nullable|url|max:255',
             'categories' => 'required|array|min:1',
             'categories.*' => 'exists:categories,id',
-            'images' => 'required|array|min:1|max:5',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:10240' // 10MB max before optimization
+
         ];
     }
 
@@ -46,12 +45,34 @@ class BusinessStoreRequest extends FormRequest
             'city.required' => 'Grad je obavezan.',
             'categories.required' => 'Morate odabrati najmanje jednu kategoriju.',
             'categories.min' => 'Morate odabrati najmanje jednu kategoriju.',
-            'images.required' => 'Morate uploadovati najmanje jednu sliku.',
-            'images.min' => 'Morate uploadovati najmanje jednu sliku.',
-            'images.max' => 'Možete uploadovati maksimalno 5 slika.',
-            'images.*.image' => 'Svi fajlovi moraju biti slike.',
-            'images.*.mimes' => 'Slike moraju biti u jpeg, png, jpg ili gif formatu.',
-            'images.*.max' => 'Svaka slika može biti maksimalno 10MB (biće optimizovana).'
         ];
+    }
+
+
+    protected function prepareForValidation()
+    {
+
+        $uploadedImages = session('uploaded_images', []);
+        
+
+        if (empty($uploadedImages)) {
+            $this->session()->flash('image_error', 'Morate uploadovati najmanje jednu sliku.');
+        }
+    }
+
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $uploadedImages = session('uploaded_images', []);
+            
+            if (empty($uploadedImages)) {
+                $validator->errors()->add('images', 'Morate uploadovati najmanje jednu sliku.');
+            }
+            
+            if (count($uploadedImages) > 10) {
+                $validator->errors()->add('images', 'Možete uploadovati maksimalno 10 slika.');
+            }
+        });
     }
 }

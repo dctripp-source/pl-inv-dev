@@ -5,21 +5,27 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 use Exception;
 
 class ImageUploadService
 {
     protected $maxWidth = 1920;
     protected $maxHeight = 1080;
-    protected $minFileSize = 200 * 1024; // 200KB
-    protected $maxFileSize = 800 * 1024; // 800KB
+    protected $minFileSize = 200 * 1024; 
+    protected $maxFileSize = 800 * 1024; 
     protected $quality = 85;
-    protected $uploadPath = 'businesses'; // /storage/public/businesses/
+    protected $uploadPath = 'businesses'; 
+    protected $imageManager;
 
-    /**
-     * Upload i optimizuj sliku biznisa
-     */
+    public function __construct()
+    {
+
+        $this->imageManager = new ImageManager(new Driver());
+    }
+
+
     public function uploadBusinessImage(UploadedFile $file): string
     {
         $this->validateImage($file);
@@ -34,31 +40,31 @@ class ImageUploadService
         Storage::disk('public')->put($fullPath, $optimizedImageData);
         
         \Log::info("Business image uploaded: " . $fullPath);
+        \Log::info("Storage path: " . storage_path('app/public/' . $fullPath));
         
         return $fullPath;
     }
 
-    /**
-     * Optimizuj sliku
-     */
     protected function optimizeImage(UploadedFile $file): string
     {
-        $image = Image::make($file->getRealPath());
+
+        $image = $this->imageManager->read($file->getRealPath());
         
-        // Resize ako je prevelika
+
         if ($image->width() > $this->maxWidth || $image->height() > $this->maxHeight) {
-            $image->resize($this->maxWidth, $this->maxHeight, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $image->scale(
+                width: $this->maxWidth,
+                height: $this->maxHeight
+            );
         }
-        
-        // Optimizuj kvalitet
+
         $quality = $this->quality;
         $imageData = null;
         
         do {
-            $imageData = $image->encode('jpg', $quality)->getEncoded();
+
+            $encoded = $image->toJpeg($quality);
+            $imageData = (string) $encoded;
             $fileSize = strlen($imageData);
             
             if ($fileSize > $this->maxFileSize && $quality > 30) {
@@ -78,9 +84,6 @@ class ImageUploadService
         return $imageData;
     }
 
-    /**
-     * Generiši unique filename
-     */
     protected function generateFilename(UploadedFile $file): string
     {
         $originalName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
@@ -91,9 +94,7 @@ class ImageUploadService
         return $slug . '_' . $timestamp . '_' . $random . '.jpg';
     }
 
-    /**
-     * Validuj upload fajl
-     */
+
     protected function validateImage(UploadedFile $file): void
     {
         if (!$file->isValid()) {
@@ -122,39 +123,34 @@ class ImageUploadService
         }
     }
 
-    /**
-     * Kreiraj direktorijum ako ne postoji
-     */
+
     protected function ensureDirectoryExists(string $path): void
     {
         if (!Storage::disk('public')->exists($path)) {
             Storage::disk('public')->makeDirectory($path);
+            \Log::info("Created directory: " . $path);
         }
     }
 
-    /**
-     * Obriši sliku
-     */
+
     public function deleteImage(string $path): bool
     {
         if (Storage::disk('public')->exists($path)) {
-            return Storage::disk('public')->delete($path);
+            $deleted = Storage::disk('public')->delete($path);
+            \Log::info("Deleted image: " . $path . " - Success: " . ($deleted ? 'YES' : 'NO'));
+            return $deleted;
         }
         
+        \Log::warning("Tried to delete non-existent image: " . $path);
         return false;
     }
 
-    /**
-     * Dobij URL slike
-     */
+
     public function getImageUrl(string $path): string
     {
         return Storage::disk('public')->url($path);
     }
 
-    /**
-     * Dobij informacije o slici
-     */
     public function getImageInfo(string $path): array
     {
         if (!Storage::disk('public')->exists($path)) {
@@ -162,21 +158,25 @@ class ImageUploadService
         }
 
         $fullPath = storage_path('app/public/' . $path);
-        $imageInfo = getimagesize($fullPath);
-        $fileSize = filesize($fullPath);
+        
+        try {
+            $imageInfo = getimagesize($fullPath);
+            $fileSize = filesize($fullPath);
 
-        return [
-            'width' => $imageInfo[0] ?? null,
-            'height' => $imageInfo[1] ?? null,
-            'size' => $fileSize,
-            'size_formatted' => $this->formatBytes($fileSize),
-            'url' => $this->getImageUrl($path)
-        ];
+            return [
+                'width' => $imageInfo[0] ?? null,
+                'height' => $imageInfo[1] ?? null,
+                'size' => $fileSize,
+                'size_formatted' => $this->formatBytes($fileSize),
+                'url' => $this->getImageUrl($path)
+            ];
+        } catch (\Exception $e) {
+            \Log::error("Error getting image info for {$path}: " . $e->getMessage());
+            return [];
+        }
     }
 
-    /**
-     * Format file size
-     */
+
     protected function formatBytes(int $size, int $precision = 2): string
     {
         $units = ['B', 'KB', 'MB', 'GB'];
@@ -186,5 +186,26 @@ class ImageUploadService
         }
         
         return round($size, $precision) . ' ' . $units[$i];
+    }
+
+
+    public function createThumbnail(string $imagePath, int $width = 300, int $height = 300): string
+    {
+        if (!Storage::disk('public')->exists($imagePath)) {
+            throw new Exception('Original image not found');
+        }
+
+        $fullPath = storage_path('app/public/' . $imagePath);
+        $image = $this->imageManager->read($fullPath);
+        
+        $thumbnail = $image->cover($width, $height);
+        
+        $pathInfo = pathinfo($imagePath);
+        $thumbnailPath = $pathInfo['dirname'] . '/thumb_' . $pathInfo['basename'];
+        
+        $thumbnailData = (string) $thumbnail->toJpeg(80);
+        Storage::disk('public')->put($thumbnailPath, $thumbnailData);
+        
+        return $thumbnailPath;
     }
 }

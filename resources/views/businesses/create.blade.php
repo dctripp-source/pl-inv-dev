@@ -3,26 +3,51 @@
 @section('title', __sr('add_business', 'Prijavite Biznis', 'Пријавите Бизнис'))
 
 @section('content')
-<!-- Hero Section -->
-<div class="bg-primary py-16">
-    <div class="container-platform text-center -mt-20 pt-32 fade-in-left">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
+<section class="bg-primary relative flex items-center mt-20 h-[40vh]">
+    <div class="absolute inset-0 z-0">
+        <img src="{{ asset('storage/images/hero-kategorije.png') }}" alt="Pozadinska slika" class="w-full h-full object-cover">
+    </div>
+    
+    <!-- Content -->
+    <div class="container-platform text-center py-2 relative z-10 fade-in-left w-full">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">
             {{ __sr('add_your_business', 'Prijavite Svoj Biznis', 'Пријавите Свој Бизнис') }}
         </h1>
-        <p class="text-xl text-blue-100">
+        <p class="text-xl text-blue-100 mb-4">
             {{ __sr('join_community', 'Pridružite se našoj zajednici', 'Придружите се нашој заједници') }}
         </p>
-        <p class="text-xl text-blue-100">
+        <p class="text-xl text-blue-100 mb-10">
             {{ __sr('join_community_note', 'Na platformu se mogu prijaviti samo korisnici Fonda INVRS', 'На платформу се могу пријавити само корисници Фонда ИНВРС') }}
         </p>
     </div>
-</div>
+</section>
 
 <!-- Form Section -->
 <div class="container-platform py-16 bg-white">
     <div class="max-w-4xl mx-auto">
         <form action="{{ route('business.store') }}" method="POST" id="business-form" class="space-y-8">
             @csrf
+			
+			<!-- ERROR DISPLAY -->
+@if ($errors->any())
+    <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div class="flex">
+            <div class="flex-shrink-0">
+                <i class="fas fa-exclamation-circle text-red-400"></i>
+            </div>
+            <div class="ml-3">
+                <h3 class="text-sm font-medium text-red-800">Greške:</h3>
+                <div class="mt-2 text-sm text-red-700">
+                    <ul class="list-disc pl-5 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
             
             <!-- Business Information -->
             <div class="space-y-6 fade-in-left delay-100">
@@ -51,12 +76,12 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         {{ __sr('categories', 'Kategorije', 'Категорије') }} *
                     </label>
-                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                         @foreach($categories as $category)
-                            <label class="flex items-center p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <label class="flex items-center p-3 border rounded-lg hover:bg-gray-50 cursor-pointer">
                                 <input type="checkbox" 
                                        name="categories[]" 
-                                       value="{{ $category->id }}" 
+                                       value="{{ $category->id }}"
                                        {{ in_array($category->id, old('categories', [])) ? 'checked' : '' }}
                                        class="rounded border-gray-300 text-primary focus:ring-primary">
                                 <span class="ml-2 text-sm">{{ $category->icon }} {{ $category->getDisplayName(getCurrentScript()) }}</span>
@@ -71,11 +96,13 @@
                 <!-- Description -->
                 <div>
                     <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ __sr('description', 'Opis biznisa', 'Опис бизниса') }}
+                        {{ __sr('description', 'Opis biznisa', 'Опис бизниса') }} *
                     </label>
                     <textarea id="description" 
                               name="description" 
                               rows="4" 
+                              required
+                              placeholder="{{ __sr('description_placeholder', 'Opišite vaš biznis, usluge koje pružate...', 'Опишите ваш бизнис, услуге које пружате...') }}"
                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">{{ old('description') }}</textarea>
                     @error('description')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -85,11 +112,12 @@
                 <!-- Services -->
                 <div>
                     <label for="services" class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ __sr('services', 'Usluge', 'Услуге') }}
+                        {{ __sr('services', 'Usluge/Proizvodi', 'Услуге/Производи') }}
                     </label>
                     <textarea id="services" 
                               name="services" 
                               rows="3" 
+                              placeholder="{{ __sr('services_placeholder', 'Navedite vaše glavne usluge ili proizvode...', 'Наведите ваше главне услуге или производе...') }}"
                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">{{ old('services') }}</textarea>
                     @error('services')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -148,12 +176,14 @@
                     <!-- Phone -->
                     <div>
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
-                            {{ __sr('phone', 'Telefon', 'Телефон') }}
+                            {{ __sr('phone', 'Telefon', 'Телефон') }} *
                         </label>
                         <input type="tel" 
                                id="phone" 
                                name="phone" 
                                value="{{ old('phone') }}" 
+                               required
+                               placeholder="+387 XX XXX XXX"
                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
                         @error('phone')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -169,6 +199,7 @@
                                id="email" 
                                name="email" 
                                value="{{ old('email') }}" 
+                               placeholder="vaš@email.com"
                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
                         @error('email')
                             <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -185,7 +216,7 @@
                            id="website" 
                            name="website" 
                            value="{{ old('website') }}" 
-                           placeholder="https://"
+                           placeholder="https://www.vaš-sajt.com"
                            class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
                     @error('website')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
@@ -193,62 +224,74 @@
                 </div>
             </div>
 
-            <!-- Address Information -->
+            <!-- Location Information -->
             <div class="space-y-6 fade-in-left delay-400">
                 <h2 class="text-2xl font-bold text-gray-900">
-                    {{ __sr('address_information', 'Adresa', 'Адреса') }}
+                    {{ __sr('location_information', 'Informacije o lokaciji', 'Информације о локацији') }}
                 </h2>
                 
-                <!-- Address -->
-                <div>
-                    <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ __sr('address', 'Adresa', 'Адреса') }}
-                    </label>
-                    <input type="text" 
-                           id="address" 
-                           name="address" 
-                           value="{{ old('address') }}" 
-                           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
-                    @error('address')
-                        <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Address -->
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ __sr('address', 'Adresa', 'Адреса') }} *
+                        </label>
+                        <input type="text" 
+                               id="address" 
+                               name="address" 
+                               value="{{ old('address') }}" 
+                               required
+                               placeholder="Ulica i broj"
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                        @error('address')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+                    
+                    <!-- City -->
+                    <div>
+                        <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                            {{ __sr('city', 'Grad', 'Град') }} *
+                        </label>
+                        <input type="text" 
+                               id="city" 
+                               name="city" 
+                               value="{{ old('city') }}" 
+                               required
+                               placeholder="Banjaluka"
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                        @error('city')
+                            <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
+            </div>
+
+            <!-- Working Hours (Optional) -->
+            <div class="space-y-6 fade-in-left delay-500">
+                <h2 class="text-2xl font-bold text-gray-900">
+                    {{ __sr('additional_information', 'Dodatne informacije', 'Додатне информације') }}
+                </h2>
                 
-                <!-- City -->
+                <!-- Working Hours -->
                 <div>
-                    <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
-                        {{ __sr('city', 'Grad', 'Град') }} *
+                    <label for="working_hours" class="block text-sm font-medium text-gray-700 mb-2">
+                        {{ __sr('working_hours', 'Radno vreme', 'Радно време') }}
                     </label>
-                    <input type="text" 
-                           id="city" 
-                           name="city" 
-                           value="{{ old('city') }}" 
-                           required 
-                           class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
-                    @error('city')
+                    <textarea id="working_hours" 
+                              name="working_hours" 
+                              rows="3" 
+                              placeholder="{{ __sr('working_hours_placeholder', 'Pon-Pet: 08:00-16:00', 'Пон-Пет: 08:00-16:00') }}"
+                              class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">{{ old('working_hours') }}</textarea>
+                    @error('working_hours')
                         <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
 
-            <!-- Working Hours -->
-            <div class="fade-in-left delay-500">
-                <label for="working_hours" class="block text-sm font-medium text-gray-700 mb-2">
-                    {{ __sr('working_hours', 'Radno vreme', 'Радно време') }}
-                </label>
-                <textarea id="working_hours" 
-                          name="working_hours" 
-                          rows="3" 
-                          placeholder="{{ __sr('working_hours_placeholder', 'Pon-Pet: 08:00-16:00', 'Пон-Пет: 08:00-16:00') }}"
-                          class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">{{ old('working_hours') }}</textarea>
-                @error('working_hours')
-                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <!-- NAPREDNI UPLOAD SLIKA SISTEM -->
-            <div class="fade-in-left delay-600" id="image-upload-section">
-                <h2 class="text-2xl font-bold text-gray-900 mb-6">
+            <!-- UPLOAD SLIKA SISTEM -->
+            <div class="space-y-6 fade-in-left delay-600" id="image-upload-section">
+                <h2 class="text-2xl font-bold text-gray-900">
                     {{ __sr('business_images', 'Slike biznisa', 'Слике бизниса') }}
                 </h2>
 
@@ -266,58 +309,45 @@
                         <p class="text-sm text-gray-500">
                             {{ __sr('supported_formats', 'Podržani formati: JPG, PNG, WebP • Maksimalno 10MB po slici', 'Подржани формати: JPG, PNG, WebP • Максимално 10МБ по слици') }}
                         </p>
+                        <p class="text-sm text-blue-600 mt-2">
+                            <span class="image-count">0</span>/10 {{ __sr('images_uploaded', 'slika uploadovano', 'слика уплодовано') }}
+                        </p>
                     </div>
                     
                     <input type="file" 
                            multiple 
                            accept="image/*" 
                            class="hidden" 
-                           id="image-input">
+                           id="image-upload">
                     
                     <button type="button" 
-                            class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200"
-                            onclick="document.getElementById('image-input').click()">
+                            class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition-colors duration-200">
                         <i class="fas fa-plus mr-2"></i>
                         {{ __sr('select_images', 'Izaberite slike', 'Изаберите слике') }}
                     </button>
-                    
-                    <!-- Loading indicator -->
-                    <div id="upload-loading" class="mt-4 hidden">
-                        <div class="inline-flex items-center">
-                            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mr-3"></div>
-                            <span class="text-blue-600">{{ __sr('uploading', 'Upload u toku...', 'Уплоад у току...') }}</span>
-                        </div>
-                    </div>
                 </div>
 
-                <!-- Preview uploadovanih slika -->
-                <div id="uploaded-images-container" class="mt-6 hidden">
+                <!-- Uploadovane slike prikaz -->
+                <div id="uploaded-images-container" class="hidden">
                     <div class="flex items-center justify-between mb-4">
-                        <h4 class="text-sm font-medium text-gray-700 flex items-center">
-                            <i class="fas fa-images mr-2 text-gray-500"></i>
-                            {{ __sr('uploaded_images', 'Uploadovane slike', 'Уплоадоване слике') }}
-                            <span id="images-count" class="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">0</span>
-                        </h4>
-                        
+                        <h3 class="text-lg font-medium text-gray-900">
+                            {{ __sr('uploaded_images', 'Uploadovane slike', 'Уплодоване слике') }}
+                            (<span class="image-count">0</span>)
+                        </h3>
                         <button type="button" 
-                                id="clear-all-images"
-                                class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                onclick="clearAllImages()" 
+                                class="text-red-600 hover:text-red-700 text-sm font-medium">
                             <i class="fas fa-trash mr-1"></i>
                             {{ __sr('delete_all', 'Obriši sve', 'Обриши све') }}
                         </button>
                     </div>
                     
                     <div id="uploaded-images-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                        <!-- Dinamički dodavane slike -->
-                    </div>
-                    
-                    <div class="mt-3 text-xs text-gray-500 flex items-center">
-                        <i class="fas fa-info-circle mr-1"></i>
-                        {{ __sr('first_image_main', 'Prva slika će biti postavljena kao glavna slika biznisa', 'Прва слика ће бити постављена као главна слика бизниса') }}
+                        <!-- Dinamički dodane slike -->
                     </div>
                 </div>
 
-                <!-- Error container -->
+                <!-- Error/Success poruke -->
                 <div id="image-errors" class="mt-4 hidden">
                     <!-- Dinamički dodavane greške -->
                 </div>
@@ -410,6 +440,34 @@
     padding: 0.75rem;
     border-radius: 0.5rem;
     margin-top: 0.5rem;
+}
+
+/* Form styling improvements */
+input[type="checkbox"]:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.fade-in-left {
+    animation: fadeInLeft 0.6s ease-out forwards;
+}
+
+.fade-in-left.delay-100 { animation-delay: 0.1s; }
+.fade-in-left.delay-200 { animation-delay: 0.2s; }
+.fade-in-left.delay-300 { animation-delay: 0.3s; }
+.fade-in-left.delay-400 { animation-delay: 0.4s; }
+.fade-in-left.delay-500 { animation-delay: 0.5s; }
+.fade-in-left.delay-600 { animation-delay: 0.6s; }
+.fade-in-left.delay-700 { animation-delay: 0.7s; }
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 </style>
 

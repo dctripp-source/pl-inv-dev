@@ -5,7 +5,8 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class ImageOptimizationService
 {
@@ -14,6 +15,12 @@ class ImageOptimizationService
     protected $minFileSize = 200 * 1024; // 200KB
     protected $maxFileSize = 700 * 1024; // 700KB
     protected $quality = 85;
+    protected $imageManager;
+
+    public function __construct()
+    {
+        $this->imageManager = new ImageManager(new Driver());
+    }
 
     /**
      * Optimize business image and save to storage
@@ -23,30 +30,27 @@ class ImageOptimizationService
         // Generate unique filename
         $filename = $this->generateFilename($file);
         
-        // ПРОМЕЊЕНО: Користи businesses/ као постојеће слике
         $path = 'businesses/' . $filename;
         
-        // Create optimized image
-        $image = Image::make($file);
+        $image = $this->imageManager->read($file->getRealPath());
         
         // Resize if too large
         if ($image->width() > $this->maxWidth || $image->height() > $this->maxHeight) {
-            $image->resize($this->maxWidth, $this->maxHeight, function ($constraint) {
-                $constraint->aspectRatio();
-                $constraint->upsize();
-            });
+            $image->scale(
+                width: $this->maxWidth,
+                height: $this->maxHeight
+            );
         }
         
         // Start with initial quality
         $quality = $this->quality;
-        $optimizedImage = null;
+        $imageData = null;
         
         // Optimize until file size is within range
         do {
-            $optimizedImage = clone $image;
-            
-            // Apply quality setting
-            $imageData = $optimizedImage->encode('jpg', $quality)->getEncoded();
+            // Apply quality setting usando novo API
+            $encoded = $image->toJpeg($quality);
+            $imageData = (string) $encoded;
             $fileSize = strlen($imageData);
             
             // If file is too large, reduce quality
@@ -65,7 +69,6 @@ class ImageOptimizationService
             
         } while ($quality >= 20 && $quality <= 95);
         
-        // ПРОМЕЊЕНО: Креирај businesses директоријум ако не постоји
         $directory = dirname($path);
         if (!Storage::disk('public')->exists($directory)) {
             Storage::disk('public')->makeDirectory($directory);
@@ -74,7 +77,6 @@ class ImageOptimizationService
         // Save optimized image
         Storage::disk('public')->put($path, $imageData);
         
-        // ДОДАТО: Log за debug
         \Log::info("Image saved to: " . $path);
         \Log::info("Full path: " . storage_path('app/public/' . $path));
         \Log::info("File exists after save: " . (Storage::disk('public')->exists($path) ? 'YES' : 'NO'));
@@ -112,7 +114,6 @@ class ImageOptimizationService
         $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $name = Str::slug($name);
         
-        // ПРОМЕЊЕНО: Користи .jpg увек за консистентност
         return $name . '_' . time() . '_' . Str::random(8) . '.jpg';
     }
     
@@ -173,40 +174,37 @@ class ImageOptimizationService
                 if ($width < 300 || $height < 300) {
                     $errors[] = 'Slika mora biti najmanje 300x300 piksela.';
                 }
-                
-                // Maximum dimensions before optimization
-                if ($width > 5000 || $height > 5000) {
-                    $errors[] = 'Slika je prevelika. Maksimalne dimenzije su 5000x5000 piksela.';
-                }
             }
         } catch (\Exception $e) {
-            $errors[] = 'Greška pri obradi slike.';
+            $errors[] = 'Greška pri čitanju slike.';
         }
         
         return $errors;
     }
     
     /**
-     * Batch validate images
+     * Create thumbnail
      */
-    public function validateImages(array $files): array
+    public function createThumbnail(string $imagePath, int $width = 300, int $height = 300): string
     {
-        $allErrors = [];
-        
-        if (count($files) > 5) {
-            $allErrors[] = 'Možete otpremiti maksimalno 5 slika.';
+        if (!Storage::disk('public')->exists($imagePath)) {
+            throw new \Exception('Original image not found');
         }
+
+        $fullPath = storage_path('app/public/' . $imagePath);
+        $image = $this->imageManager->read($fullPath);
         
-        foreach ($files as $index => $file) {
-            if ($file instanceof UploadedFile) {
-                $errors = $this->validateImage($file);
-                if (!empty($errors)) {
-                    $fileName = $file->getClientOriginalName();
-                    $allErrors[] = "Slika '{$fileName}': " . implode(', ', $errors);
-                }
-            }
-        }
+        // Create thumbnail
+        $thumbnail = $image->cover($width, $height);
         
-        return $allErrors;
+        // Generate thumbnail path
+        $pathInfo = pathinfo($imagePath);
+        $thumbnailPath = $pathInfo['dirname'] . '/thumb_' . $pathInfo['basename'];
+        
+        // Save thumbnail
+        $thumbnailData = (string) $thumbnail->toJpeg(80);
+        Storage::disk('public')->put($thumbnailPath, $thumbnailData);
+        
+        return $thumbnailPath;
     }
 }

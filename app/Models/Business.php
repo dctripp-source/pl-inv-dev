@@ -13,7 +13,11 @@ class Business extends Model
 
     protected $fillable = [
         'owner_first_name',
+        'owner_first_name_latin',
+        'owner_first_name_cyrillic',
         'owner_last_name',
+        'owner_last_name_latin',
+        'owner_last_name_cyrillic',
         'business_name',
         'business_name_latin',
         'business_name_cyrillic',
@@ -43,6 +47,80 @@ class Business extends Model
         'social_media' => 'array',
         'approved_at' => 'datetime',
     ];
+
+    // Boot metode za auto-generiranje transliteracija
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($business) {
+            if (!$business->slug) {
+                $business->slug = Str::slug($business->business_name);
+            }
+            $business->generateTransliterations();
+        });
+        
+        static::updating(function ($business) {
+            if ($business->isDirty('business_name') && !$business->isDirty('slug')) {
+                $business->slug = Str::slug($business->business_name);
+            }
+            
+            if ($business->isDirty([
+                'owner_first_name', 'owner_last_name', 'business_name', 
+                'description', 'services', 'address', 'city'
+            ])) {
+                $business->generateTransliterations();
+            }
+        });
+    }
+
+    // Generiši transliteracije
+    public function generateTransliterations()
+    {
+        // Owner names
+        if ($this->owner_first_name) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->owner_first_name);
+            $this->owner_first_name_latin = $scripts['latin'];
+            $this->owner_first_name_cyrillic = $scripts['cyrillic'];
+        }
+
+        if ($this->owner_last_name) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->owner_last_name);
+            $this->owner_last_name_latin = $scripts['latin'];
+            $this->owner_last_name_cyrillic = $scripts['cyrillic'];
+        }
+
+        // Business fields
+        if ($this->business_name) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->business_name);
+            $this->business_name_latin = $scripts['latin'];
+            $this->business_name_cyrillic = $scripts['cyrillic'];
+        }
+
+        if ($this->description) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->description);
+            $this->description_latin = $scripts['latin'];
+            $this->description_cyrillic = $scripts['cyrillic'];
+        }
+
+        if ($this->services) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->services);
+            $this->services_latin = $scripts['latin'];
+            $this->services_cyrillic = $scripts['cyrillic'];
+        }
+
+        if ($this->address) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->address);
+            $this->address_latin = $scripts['latin'];
+            $this->address_cyrillic = $scripts['cyrillic'];
+        }
+
+        if ($this->city) {
+            $scripts = SerbianTransliterator::generateBothScripts($this->city);
+            $this->city_latin = $scripts['latin'];
+            $this->city_cyrillic = $scripts['cyrillic'];
+        }
+    }
 
     // RELACIJE
     public function categories()
@@ -208,6 +286,11 @@ class Business extends Model
         return $this->getDisplayCity(getCurrentScript());
     }
 
+    public function getDisplayOwnerNameCurrent()
+    {
+        return $this->getDisplayOwnerName(getCurrentScript());
+    }
+
     // IMAGE HELPER METHODS
     /**
      * Da li biznis ima slike
@@ -233,85 +316,16 @@ class Business extends Model
     }
 
     /**
-     * Ukloni sve slike
+     * Dodeli glavnu sliku
      */
-    public function clearImages()
+    public function setPrimaryImage($imageId)
     {
-        $this->images()->each(function ($image) {
-            $image->delete(); // Ovo će triggrovati brisanje fajla
-        });
-    }
-
-    /**
-     * Generiši transliteracije za sve relevantne kolone
-     */
-    public function generateTransliterations()
-    {
-        // Business name
-        if ($this->business_name) {
-            $scripts = SerbianTransliterator::generateBothScripts($this->business_name);
-            $this->business_name_latin = $scripts['latin'];
-            $this->business_name_cyrillic = $scripts['cyrillic'];
-        }
-
-        // Description
-        if ($this->description) {
-            $scripts = SerbianTransliterator::generateBothScripts($this->description);
-            $this->description_latin = $scripts['latin'];
-            $this->description_cyrillic = $scripts['cyrillic'];
-        }
-
-        // Services
-        if ($this->services) {
-            $scripts = SerbianTransliterator::generateBothScripts($this->services);
-            $this->services_latin = $scripts['latin'];
-            $this->services_cyrillic = $scripts['cyrillic'];
-        }
-
-        // Address
-        if ($this->address) {
-            $scripts = SerbianTransliterator::generateBothScripts($this->address);
-            $this->address_latin = $scripts['latin'];
-            $this->address_cyrillic = $scripts['cyrillic'];
-        }
-
-        // City
-        if ($this->city) {
-            $scripts = SerbianTransliterator::generateBothScripts($this->city);
-            $this->city_latin = $scripts['latin'];
-            $this->city_cyrillic = $scripts['cyrillic'];
-        }
-    }
-
-    /**
-     * KOMBINOVANI BOOT METOD
-     */
-    protected static function boot()
-    {
-        parent::boot();
+        // Ukloni primary status sa svih slika
+        $this->images()->update(['is_primary' => false]);
         
-        // Postojeća logika za transliteracije
-        static::creating(function ($business) {
-            $business->slug = Str::slug($business->business_name);
-            $business->generateTransliterations();
-        });
+        // Dodeli primary status određenoj slici
+        $this->images()->where('id', $imageId)->update(['is_primary' => true]);
         
-        static::updating(function ($business) {
-            if ($business->isDirty('business_name')) {
-                $business->slug = Str::slug($business->business_name);
-            }
-            
-            // Generiši transliteracije za izmenjene vrednosti
-            if ($business->isDirty(['business_name', 'description', 'services', 'address', 'city'])) {
-                $business->generateTransliterations();
-            }
-        });
-
-        // NOVA logika za brisanje slika
-        static::deleting(function ($business) {
-            $business->images()->each(function ($image) {
-                $image->delete(); // Ovo će triggrovati brisanje fajla iz BusinessImage modela
-            });
-        });
+        return $this;
     }
 }
